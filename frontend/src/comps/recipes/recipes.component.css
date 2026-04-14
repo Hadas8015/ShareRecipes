@@ -1,0 +1,868 @@
+@import url('https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;500;700&family=Assistant:wght@200;300;400;600&display=swap');
+
+.gallery-container {
+  background-color: #0d0d0d;
+  min-height: 100vh;
+  padding: 100px 40px;
+  color: #C5A059;
+  font-family: 'Assistant', sans-serif;
+  direction: rtl;
+}
+
+/* כותרת ועיצוב עליון */
+.header-section {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.main-title {
+  font-size: 3.5rem;
+  margin: 0;
+  color: #C5A059;
+}
+
+.gold-divider {
+  width: 60px;
+  height: 1px;
+  background: #C5A059;
+  margin: 20px auto;
+}
+
+.recipe-count {
+  color: #888;
+  font-size: 1rem;
+  letter-spacing: 1px;
+}
+
+/* כפתורי פעולה */
+.top-nav-actions {
+  display: flex;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto 30px;
+}
+
+.back-to-categories-btn {
+  position: fixed;
+  top: 83px;
+  right: 45px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #000;
+  border: none;
+  color: #C5A059;
+  cursor: pointer;
+  transition: 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  z-index: 997;
+}
+
+.back-to-categories-btn:hover svg {
+  border-radius: 50%;
+  box-shadow: 1px 4px 15px rgba(197, 160, 89, 0.7);
+}
+
+.filter-toggle-btn {
+  position: fixed;
+  background-color: #000;
+  top: 130px;
+  right: 45px;
+  z-index: 998;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.filter-toggle-btn:hover svg {
+  box-shadow: 1px 4px 15px rgba(197, 160, 89, 0.7);
+}
+
+/* גריד - מלבנים עומדים (Portrait) */
+.recipes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 30px;
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+/* כרטיסיית מתכון בסגנון קטגוריה */
+.recipe-card-premium {
+  position: relative;
+  height: 400px;
+  overflow: hidden;
+  border: 1px solid #1a1a1a;
+  transition: 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+  cursor: pointer;
+}
+
+.recipe-card-premium:hover {
+  border-color: #C5A059;
+}
+
+.card-image-wrapper {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.recipe-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center !important;
+  filter: brightness(0.4) contrast(1.1);
+  transition: 1.5s ease;
+}
+
+.recipe-card-premium:hover .recipe-img {
+  transform: scale(1.1);
+  filter: brightness(0.6);
+}
+
+/* שכבת המידע על הכרטיסייה */
+.card-overlay {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+}
+
+.card-content-overlay {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  padding: 30px;
+  z-index: 2;
+}
+
+.recipe-name-serif {
+  font-size: 1.2rem;
+  color: #C5A059;
+  margin: 10px 0;
+}
+
+.recipe-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #fff;
+  opacity: 0.8;
+  font-size: 0.9rem;
+}
+
+.recipes-line {
+  width: 40px;
+  height: 1px;
+  background: #C5A059;
+  transition: 0.5s ease;
+}
+
+.recipe-card-premium:hover .recipes-line {
+  width: 32%;
+}
+
+/* תגיות ודירוג */
+.recipe-type-badge {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  border: 1px solid rgba(255,255,255,0.3);
+  padding: 2px 8px;
+  color: #fff;
+}
+.recipe-type-badge.meat {
+  background: none;
+  border-color: #dc3545;
+  color: #dc3545;
+}
+
+.recipe-type-badge.dairy {
+  background: none;
+  border-color: #17a2b8;
+  color: #17a2b8;
+}
+
+.recipe-type-badge.parve {
+  background:none;
+  border-color: #C5A059;
+  color: #C5A059;
+}
+
+.star { color: #333; font-size: 1rem; }
+.star.filled { color: #C5A059; }
+
+/* ===============================================
+   פאנל סינון ומיון - עיצוב יוקרתי
+   =============================================== */
+
+.filter-panel {
+  position: fixed;
+  top: 0; 
+  right: -420px;
+  width: 400px;
+  height: 100%;
+  background: linear-gradient(180deg, #0a0a0a 0%, #050505 100%);
+  z-index: 1000;
+  transition: right 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 0;
+  border-left: 1px solid rgba(197, 160, 89, 0.2);
+  overflow-y: auto;
+  box-shadow: -10px 0 40px rgba(0, 0, 0, 0.5);
+}
+
+.filter-panel.open { 
+  right: 0;
+}
+
+/* Scrollbar יוקרתי */
+.filter-panel::-webkit-scrollbar {
+  width: 6px;
+}
+
+.filter-panel::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+
+.filter-panel::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #C5A059 0%, #8B7042 100%);
+  border-radius: 10px;
+}
+
+.filter-panel::-webkit-scrollbar-thumb:hover {
+  background: #C5A059;
+}
+
+.overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 999;
+  transition: opacity 0.3s ease;
+}
+
+/* כפתור סגירה מעוצב */
+.close-btn {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  background: rgba(197, 160, 89, 0.1);
+  border: 1px solid rgba(197, 160, 89, 0.3);
+  color: #C5A059;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+.close-btn:hover {
+  border-color: #C5A059;
+}
+
+.close-btn svg {
+  color: #C5A059;
+}
+
+.close-btn svg:hover {
+  color: #C5A059;
+  background-color: rgba(197, 159, 89, 0);
+}
+
+/* תוכן הפאנל */
+.panel-content {
+  padding: 80px 32px 32px;
+}
+
+/* כותרת הפאנל */
+.panel-header {
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid rgba(197, 196, 196, 0.285);
+}
+
+.panel-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #C5A059;
+  margin: 0 0 8px 0;
+  letter-spacing: 0.5px;
+}
+
+.panel-subtitle {
+  color: #888;
+  font-size: 0.9rem;
+  margin: 0;
+  font-weight: 300;
+  letter-spacing: 0.3px;
+}
+
+/* כפתור נקה הכל */
+.reset-btn {
+  background: rgba(197, 159, 89, 0);
+  border: 1px solid rgba(197, 160, 89, 0.3);
+  color: #C5A059;
+  padding: 12px 20px;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom: 32px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.3s ease;
+}
+
+.reset-btn:hover {
+  border-color: #C5A059;
+}
+
+.reset-btn:active {
+  background-color: #c59f592e;
+}
+
+/* סקציות */
+.section {
+  margin-bottom: 36px;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.section-header svg {
+  color: #C5A059;
+  opacity: 0.8;
+}
+
+.section-title {
+  margin-top: 0.5cm;
+  color: #C5A059;
+  font-size: 1.3rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.section-desc {
+  color: #999;
+  font-size: 0.85rem;
+  margin: 0 0 20px 0;
+  line-height: 1.5;
+  font-weight: 300;
+}
+
+/* Divider יוקרתי */
+.divider {
+  border: none;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(182, 182, 182, 0.579) 50%, transparent 100%);
+  margin: 40px 0;
+}
+
+/* Input רכיבים */
+.ingredient-input-wrapper {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+/* Input משותף לפאנל - מאחד ingredient-input ו-modern-input */
+.panel-input {
+  flex: 1;
+  width: 89.5%;
+  background: rgba(26, 26, 26, 0.6);
+  border: 1px solid rgba(197, 160, 89, 0.2);
+  color: #fff;
+  padding: 14px 16px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  font-family: 'Assistant', sans-serif;
+}
+
+.panel-input:focus {
+  outline: none;
+  border-color: #C5A059;
+  background: rgba(26, 26, 26, 0.8);
+}
+
+.panel-input::placeholder {
+  color: #666;
+  font-weight: 300;
+}
+
+.add-ingredient-btn {
+  background: #C5A059;
+  color: #000;
+  border: none;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 8px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.add-ingredient-btn svg {
+  color: #000;
+}
+
+#plus svg:hover {
+  color: #000000;
+  background-color: #e0be7900;
+}
+
+#plus:hover {
+  background-color: #e0bd79;
+}
+
+/* Chips מעוצבים */
+.chips-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.chip {
+  background: linear-gradient(135deg, rgba(197, 160, 89, 0.15) 0%, rgba(197, 160, 89, 0.05) 100%);
+  color: #C5A059;
+  padding: 8px 14px;
+  border-radius: 20px;
+  border: 1px solid rgba(197, 160, 89, 0.3);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.chip:hover {
+  background: linear-gradient(135deg, rgba(197, 160, 89, 0.25) 0%, rgba(197, 160, 89, 0.15) 100%);
+  border-color: #C5A059;
+}
+
+.chip-remove {
+  background: none;
+  border: none;
+  color: #C5A059;
+  cursor: pointer;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.chip-remove:hover {
+  background: rgba(197, 160, 89, 0.2);
+}
+
+/* כפתור חיפוש */
+.search-btn {
+  background: #C5A059;
+  color: #000;
+  border: none;
+  padding: 14px 24px;
+  cursor: pointer;
+  width: 100%;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.3s ease;
+}
+
+.search-btn:hover:not(:disabled) {
+  background: #e0bd79;
+}
+
+.search-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.search-btn svg {
+  color: #000;
+}
+
+/* סטטוס חיפוש חכם */
+.smart-search-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #4caf50;
+  margin-top: 16px;
+  font-weight: 500;
+  font-size: 0.9rem;
+  padding: 10px 16px;
+  background: rgba(76, 175, 80, 0.1);
+  border: 1px solid rgba(76, 175, 80, 0.3);
+  border-radius: 8px;
+}
+
+.smart-search-status svg {
+  color: #4caf50;
+}
+
+/* קבוצות פילטר */
+.filter-group {
+  margin-bottom: 28px;
+}
+
+.filter-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #898989;
+  font-weight: 600;
+  margin-bottom: 12px;
+  font-size: 0.95rem;
+  letter-spacing: 0.3px;
+}
+
+.filter-label svg {
+  opacity: 0.8;
+}
+
+/* Radio buttons מעוצבים */
+.radio-group-modern {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.radio-option-modern {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: rgba(26, 26, 26, 0.4);
+  border: 1px solid rgba(197, 160, 89, 0.15);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.radio-option-modern:hover {
+  background: rgba(26, 26, 26, 0.6);
+  border-color: rgba(197, 160, 89, 0.3);
+}
+
+.radio-option-modern input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.radio-custom {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(197, 160, 89, 0.4);
+  border-radius: 50%;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.radio-option-modern input[type="radio"]:checked ~ .radio-custom {
+  border-color: #C5A059;
+  background: rgba(197, 160, 89, 0.1);
+}
+
+.radio-option-modern input[type="radio"]:checked ~ .radio-custom::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px;
+  height: 10px;
+  background: #C5A059;
+  border-radius: 50%;
+}
+
+.radio-text {
+  color: #fff;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.radio-option-modern input[type="radio"]:checked ~ .radio-text {
+  color: #C5A059;
+}
+
+/* Range slider מעוצב */
+.range-wrapper-modern {
+  position: relative;
+  height: 60px;
+  padding: 20px 0;
+}
+
+.range-slider-modern {
+  position: absolute;
+  width: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 6px;
+  background: rgba(197, 160, 89, 0.2);
+  border-radius: 10px;
+  outline: none;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.range-slider-modern::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: linear-gradient(135deg, #C5A059 0%, #8B7042 100%);
+  cursor: pointer;
+  border-radius: 50%;
+  border: 3px solid #0a0a0a;
+  transition: all 0.2s ease;
+  pointer-events: auto;
+}
+
+.range-slider-modern::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+}
+
+.range-slider-modern::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: #C5A059;
+  cursor: pointer;
+  border-radius: 50%;
+  border: 3px solid #0a0a0a;
+  transition: all 0.2s ease;
+  pointer-events: auto;
+}
+
+.range-slider-modern::-moz-range-thumb:hover {
+  transform: scale(1.15);
+}
+
+.range-values-modern {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+}
+
+.range-value-badge {
+  background: rgba(197, 159, 89, 0.12);
+  color: #C5A059;
+  padding: 6px 14px;
+  border-radius: 16px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: 1px solid rgba(197, 160, 89, 0.3);
+}
+
+.range-divider {
+  color: #666;
+  font-weight: 300;
+}
+
+/* דירוג מעוצב */
+.rating-header-modern {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  padding: 12px 16px;
+  background: rgba(26, 26, 26, 0.4);
+  border: 1px solid rgba(197, 160, 89, 0.15);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.rating-header-modern:hover {
+  background: rgba(26, 26, 26, 0.6);
+  border-color: rgba(197, 160, 89, 0.3);
+}
+
+.expand-icon-modern {
+  color: #C5A059;
+  transition: transform 0.3s ease;
+}
+
+.expand-icon-modern.expanded {
+  transform: rotate(180deg);
+}
+
+.rating-options-modern {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.rating-option-modern {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: rgba(26, 26, 26, 0.4);
+  border: 1px solid rgba(197, 160, 89, 0.15);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.rating-option-modern:hover {
+  background: rgba(26, 26, 26, 0.6);
+  border-color: rgba(197, 160, 89, 0.3);
+}
+
+.rating-option-modern.selected {
+  background: rgba(197, 159, 89, 0.076);
+  border-color: #C5A059;
+}
+
+.stars-modern {
+  display: flex;
+  gap: 4px;
+}
+
+.checkmark-modern {
+  color: #4caf50;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* כפתורי מיון מעוצבים */
+.sort-options-modern {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sort-btn-modern {
+  background: rgba(26, 26, 26, 0.4);
+  border: 1px solid rgba(197, 160, 89, 0.15);
+  color: #fff;
+  padding: 16px 20px;
+  cursor: pointer;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.3s ease;
+  text-align: right;
+}
+
+.sort-btn-modern span {
+  flex: 1;
+  text-align: right;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.sort-direction {
+  font-size: 0.8rem;
+  color: #666;
+  font-weight: 400;
+}
+
+.sort-btn-modern:hover {
+  border-color: rgba(197, 159, 89, 0.717);
+}
+
+.sort-btn-modern:hover svg {
+  color: #C5A059;
+}
+
+.sort-btn-modern.active {
+  background: rgba(197, 159, 89, 0.096);
+  border-color: #C5A059;
+}
+
+.sort-btn-modern.active svg {
+  color: #C5A059;
+}
+
+.sort-btn-modern.active span {
+  color: #C5A059;
+}
+
+.sort-btn-modern.active .sort-direction {
+  color: #999;
+}
+
+/* כפתור מחיקה */
+.delete-recipe-btn {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0, 0, 0, 0.9);
+  cursor: pointer;
+  font-size: 1.3rem;
+  z-index: 10;
+  transition: 0.3s;
+}
+
+.delete-recipe-btn:hover {
+  transform: rotate(10deg);
+  background: rgb(0, 0, 0);
+}
+
+.match-score-luxury {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  background: rgba(197, 160, 89, 0.9);
+  color: #000;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 0.85rem;
+}
+
+svg {
+  color: #C5A059;
+}
+
+svg:hover {
+  background: #000000;
+  border-radius: 50%;
+  cursor: pointer;
+}

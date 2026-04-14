@@ -1,0 +1,133 @@
+/* פוטר פרימיום - סגנון בוטיק */
+.footer-premium {
+  background-color: #080808; /* שחור עמוק יותר מהרקע הרגיל */
+  color: #E8D5B5;
+  padding: 80px 0 40px;
+  border-top: 1px solid #1a1a1a;
+  font-family: 'Assistant', sans-serif;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+.footer-content {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr;
+  gap: 60px;
+  margin-bottom: 60px;
+}
+
+/* לוגו וסלוגן */
+.footer-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  color: #C5A059;
+  letter-spacing: 3px;
+  margin-bottom: 15px;
+}
+
+.footer-divider-gold {
+  width: 40px;
+  height: 1px;
+  background-color: #C5A059;
+  margin-bottom: 20px;
+}
+
+.footer-tagline {
+  font-size: 0.95rem;
+  line-height: 1.8;
+  opacity: 0.7;
+  font-weight: 300;
+}
+
+/* כותרות סקציות */
+.footer-title {
+  color: #C5A059;
+  font-size: 1.3rem;
+  margin-bottom: 25px;
+  font-weight: 500;
+}
+
+/* קישורים */
+.footer-links, .contact-info {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-links li, .contact-info li {
+  margin-bottom: 12px;
+}
+
+.footer-links a, .contact-info a {
+  color: #E8D5B5;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: 0.3s ease;
+  opacity: 0.6;
+}
+
+.footer-links a:hover, .contact-info a:hover {
+  color: #C5A059;
+  opacity: 1;
+  padding-right: 5px; /* אפקט תזוזה קטן בגלל ה-RTL */
+}
+
+/* רשתות חברתיות - טקסטואלי ונקי */
+.social-links {
+  display: flex;
+  gap: 15px;
+  margin-top: 25px;
+}
+
+.social-link {
+  font-size: 0.75rem;
+  color: #C5A059;
+  text-decoration: none;
+  letter-spacing: 1px;
+  border-bottom: 1px solid transparent;
+  transition: 0.3s;
+}
+
+.social-link:hover {
+  border-bottom: 1px solid #C5A059;
+}
+
+/* תחתית הפוטר */
+.footer-bottom {
+  text-align: center;
+}
+
+.footer-line {
+  width: 100%;
+  height: 1px;
+  background-color: #1a1a1a;
+  margin-bottom: 30px;
+}
+
+.footer-copyright {
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+  opacity: 0.4;
+  font-family: 'Heebo', sans-serif;
+}
+
+/* התאמה לניידים */
+@media (max-width: 768px) {
+  .footer-content {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 40px;
+  }
+  
+  .footer-divider-gold {
+    margin: 0 auto 20px;
+  }
+  
+  .social-links {
+    justify-content: center;
+  }
+}

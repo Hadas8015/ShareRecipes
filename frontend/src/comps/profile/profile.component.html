@@ -1,0 +1,384 @@
+<!-- דף פרופיל - סיידבר עם פרטי משתמש + אזור תוכן דינמי (מועדפים/מתכונים שלי/יצירה/בקשת הרשאות) -->
+
+<div class="profile-page-wrapper" dir="rtl">
+  
+  <!-- סיידבר - פרטי משתמש וניווט -->
+  <aside class="profile-sidebar-card">
+    <div class="avatar-circle">
+      {{ currentUser?.name?.charAt(0) || '👤' }}
+    </div>
+    
+    <h1 class="user-name-serif">{{ currentUser?.name }}</h1>
+    <p class="user-email-serif">{{currentUser?.email}}</p>
+    <div class="status-pill-black">
+      {{ getRoleLabel() }}
+    </div>
+
+    <!-- אזור ביוגרפיה עם אפשרות עריכה -->
+    <div class="bio-area">
+      <div *ngIf="!isEditingBio">
+        <p class="bio-display-text">{{ currentUser?.bio || 'לחץ לעריכת תיאור...' }}</p>
+        <button class="edit-bio-btn" (click)="isEditingBio = true">{{ currentUser?.bio ? 'עריכת ביוגרפיה ✎' : 'כתיבת ביוגרפיה ✎' }}</button>
+      </div>
+
+      <div *ngIf="isEditingBio">
+        <textarea [(ngModel)]="tempBio" class="input-luxury bio-textarea"></textarea>
+        <div class="bio-buttons-row">
+          <button (click)="saveBio()" class="bio-confirm-btn">אישור</button>
+          <button (click)="cancelEditingBio()" class="bio-cancel-btn">ביטול</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- תפריט ניווט אייקונים - מותאם לפי הרשאות -->
+    <nav class="icons-menu">
+      <!-- מועדפים - לכולם -->
+      <button class="nav-icon-btn" (click)="changeSection('favorites')" title="המועדפים שלי">❤</button>
+      
+      <!-- המתכונים שלי - רק ל-Uploader/Admin -->
+      <button class="nav-icon-btn" *ngIf="canUpload()" (click)="changeSection('my-recipes')" title="המתכונים שלי">
+        <svg width="28" height="28" viewBox="0 0 24 24" stroke-width="1.5" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20 12V5.74853C20 5.5894 19.9368 5.43679 19.8243 5.32426L16.6757 2.17574C16.5632 2.06321 16.4106 2 16.2515 2H4.6C4.26863 2 4 2.26863 4 2.6V21.4C4 21.7314 4.26863 22 4.6 22H11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+          <path d="M8 10H16M8 6H12M8 14H11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+          <path d="M16.3056 17.1133L17.2147 15.1856C17.3314 14.9381 17.6686 14.9381 17.7853 15.1856L18.6944 17.1133L20.7275 17.4243C20.9884 17.4642 21.0923 17.7998 20.9035 17.9923L19.4326 19.4917L19.7797 21.61C19.8243 21.882 19.5515 22.0895 19.3181 21.961L17.5 20.9603L15.6819 21.961C15.4485 22.0895 15.1757 21.882 15.2203 21.61L15.5674 19.4917L14.0965 17.9923C13.9077 17.7998 14.0116 17.4642 14.2725 17.4243L16.3056 17.1133Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+          <path d="M16 2V5.4C16 5.73137 16.2686 6 16.6 6H20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+      </button>
+      
+      <!-- יצירת מתכון - רק ל-Uploader/Admin -->
+      <button class="nav-icon-btn" *ngIf="canUpload()" (click)="startCreateNewRecipe()" title="יצירת מתכון">
+        <svg width="28" height="28" viewBox="0 0 24 24" stroke-width="1.5" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4 12V2.6C4 2.26863 4.26863 2 4.6 2H16.2515C16.4106 2 16.5632 2.06321 16.6757 2.17574L19.8243 5.32426C19.9368 5.43679 20 5.5894 20 5.74853V21.4C20 21.7314 19.7314 22 19.4 22H11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+          <path d="M16 2V5.4C16 5.73137 16.2686 6 16.6 6H20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+          <path d="M1.99219 19H4.99219M7.99219 19H4.99219M4.99219 19V16M4.99219 19V22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+      </button>
+      
+      <!-- שליחת בקשה להרשאות - רק ל-Reader שלא שלח בקשה ולא נדחה -->
+      <button class="nav-icon-btn" *ngIf="isReader() && canRequestPermission()" (click)="openRequestPermissionForm()" title="שלח בקשה להרשאות העלאה">
+        <svg width="28" height="28" viewBox="0 0 24 24" stroke-width="1.5" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M7 9L12 12.5L17 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+          <path d="M2 17V7C2 5.89543 2.89543 5 4 5H20C21.1046 5 22 5.89543 22 7V17C22 18.1046 21.1046 19 20 19H4C2.89543 19 2 18.1046 2 17Z" stroke="currentColor" stroke-width="1.5"></path>
+        </svg>
+      </button>
+      
+      <!-- הודעות סטטוס -->
+      <div *ngIf="isReader() && hasRequestedPermission()" class="status-message-base status-message-pending">
+        בקשתך ממתינה לאישור המנהל
+      </div>
+      
+      <div *ngIf="isReader() && currentUser?.was_rejected" class="status-message-base status-message-rejected">
+        בקשתך נדחתה
+      </div>
+      
+      <div *ngIf="requestMessage" class="status-message-base status-message-success">
+        {{ requestMessage }}
+      </div>
+      
+      <!-- יציאה - לכולם -->
+      <button class="nav-icon-btn logout-btn" (click)="logout()" title="יציאה">
+        <svg width="28" height="28" stroke-width="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20 13V19C20 20.1046 19.1046 21 18 21H6C4.89543 21 4 20.1046 4 19V13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+          <path d="M12 15V3M12 3L8.5 6.5M12 3L15.5 6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+      </button>
+    </nav>
+  </aside>
+
+  <div class="vertical-line-divider"></div>
+
+  <!-- אזור תוכן ראשי - משתנה לפי activeSection -->
+  <main class="content-area" id="mainContentScroll">
+    
+    <!-- סקשן מועדפים -->
+    <div *ngIf="activeSection === 'favorites'">
+      <h2 class="section-title">המועדפים שלי</h2>
+      
+      <div *ngIf="loadingFavorites" class="loading-state">
+        טוען מועדפים... 
+        <svg width="28" height="28" viewBox="0 0 24 24" stroke-width="1.5" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 12C15.866 12 19 8.86599 19 5H5C5 8.86599 8.13401 12 12 12ZM12 12C15.866 12 19 15.134 19 19H5C5 15.134 8.13401 12 12 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+          <path d="M5 2L12 2L19 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+          <path d="M5 22H12L19 22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+      </div>
+
+      <div *ngIf="!loadingFavorites && favoriteRecipes.length === 0" class="empty-state">
+        <h3 class="empty-state-title">עדיין אין מתכונים מועדפים</h3>
+        <p class="empty-state-text">התחל לאסוף מתכונים מועדפים על ידי לחיצה על ❤</p>
+      </div>
+
+      <!-- גריד מועדפים עם כפתור מחיקה -->
+      <div class="recipes-grid" *ngIf="!loadingFavorites && favoriteRecipes.length > 0">
+        <div class="recipe-card-premium" *ngFor="let recipe of favoriteRecipes">
+          
+          <button class="delete-btn-profile" (click)="removeFavorite(recipe.id); $event.stopPropagation()" title="הסר ממועדפים">
+            <svg width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M20 9L18.005 20.3463C17.8369 21.3026 17.0062 22 16.0353 22H7.96474C6.99379 22 6.1631 21.3026 5.99496 20.3463L4 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+              <path d="M21 6L15.375 6M3 6L8.625 6M8.625 6V4C8.625 2.89543 9.52043 2 10.625 2H13.375C14.4796 2 15.375 2.89543 15.375 4V6M8.625 6L15.375 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+          </button>
+          
+          <div class="card-image-wrapper" (click)="goToRecipe(recipe.id)">
+            <img [src]="'http://127.0.0.1:5000/' + recipe.image_path" alt="תמונת מתכון" class="recipe-img">
+            <div class="card-overlay"></div>
+            
+            <div class="card-content-overlay">
+              <div class="tags-row">
+                <span class="recipe-type-badge" 
+                      [class.meat]="recipe.type === 'Meat'" 
+                      [class.dairy]="recipe.type === 'Dairy'" 
+                      [class.parve]="recipe.type === 'Parve'">
+                  {{ recipe.type === 'Meat' ? 'בשרי' : recipe.type === 'Dairy' ? 'חלבי' : 'פרווה' }}
+                </span>
+              </div>
+              
+              <h2 class="recipe-name-serif">{{ recipe.name }}</h2>
+              
+              <div class="recipe-meta">
+                <span class="recipe-time">{{ recipe.preparation_time }} דק'</span>
+                <span class="separator">|</span>
+                <div class="stars-display">
+                  <span *ngFor="let star of [1, 2, 3, 4, 5]" class="star" [class.filled]="recipe.rating >= star">★</span>
+                </div>
+              </div>
+              <div class="category-line"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- סקשן המתכונים שלי - רק ל-Uploader/Admin -->
+    <div *ngIf="activeSection === 'my-recipes'">
+      <h2 class="section-title">המתכונים שלי</h2>
+      
+      <div *ngIf="loadingMyRecipes" class="loading-state">
+        טוען מתכונים... 
+        <svg width="28" height="28" viewBox="0 0 24 24" stroke-width="1.5" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 12C15.866 12 19 8.86599 19 5H5C5 8.86599 8.13401 12 12 12ZM12 12C15.866 12 19 15.134 19 19H5C5 15.134 8.13401 12 12 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+          <path d="M5 2L12 2L19 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+          <path d="M5 22H12L19 22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+      </div>
+
+      <div *ngIf="!loadingMyRecipes && myRecipes.length === 0" class="empty-state">
+        <h3 class="empty-state-title">עדיין לא העלאת מתכונים</h3>
+        <p class="empty-state-text">לחץ על כפתור 'יצירת מתכון' כדי להתחיל</p>
+      </div>
+
+      <!-- גריד מתכונים עם כפתור עריכה -->
+      <div class="recipes-grid" *ngIf="!loadingMyRecipes && myRecipes.length > 0">
+        <div class="recipe-card-premium" *ngFor="let recipe of myRecipes">
+          
+          <button class="edit-btn-profile" (click)="editRecipeInline(recipe); $event.stopPropagation()" title="ערוך מתכון">
+            <svg width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3 21L12 21H21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+              <path d="M12.2218 5.82839L15.0503 2.99996L20 7.94971L17.1716 10.7781M12.2218 5.82839L6.61522 11.435C6.42769 11.6225 6.32233 11.8769 6.32233 12.1421L6.32233 16.6776L10.8579 16.6776C11.1231 16.6776 11.3774 16.5723 11.565 16.3847L17.1716 10.7781M12.2218 5.82839L17.1716 10.7781" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+          </button>
+          
+          <div class="card-image-wrapper" (click)="goToRecipe(recipe.id)">
+            <img [src]="'http://127.0.0.1:5000/' + recipe.image_path" alt="תמונת מתכון" class="recipe-img">
+            <div class="card-overlay"></div>
+            
+            <div class="card-content-overlay">
+              <div class="tags-row">
+                <span class="recipe-type-badge" 
+                      [class.meat]="recipe.type === 'Meat'" 
+                      [class.dairy]="recipe.type === 'Dairy'" 
+                      [class.parve]="recipe.type === 'Parve'">
+                  {{ recipe.type === 'Meat' ? 'בשרי' : recipe.type === 'Dairy' ? 'חלבי' : 'פרווה' }}
+                </span>
+              </div>
+              
+              <h2 class="recipe-name-serif">{{ recipe.name }}</h2>
+              
+              <div class="recipe-meta">
+                <span class="recipe-time">{{ recipe.preparation_time }} דק'</span>
+                <span class="separator">|</span>
+                <div class="stars-display">
+                  <span *ngFor="let star of [1, 2, 3, 4, 5]" class="star" [class.filled]="recipe.rating >= star">★</span>
+                </div>
+              </div>
+              <div class="category-line"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    
+    <!-- סקשן יצירת/עריכת מתכון -->
+    <div *ngIf="activeSection === 'create'">
+      <h2 class="section-title-no-margin">{{ editingRecipeId ? 'עריכת מתכון' : 'יצירת מתכון' }}</h2>
+      <div class="form-container">
+        
+        <input type="text" [(ngModel)]="recipeName" class="input-luxury input-with-margin" id="input-luxury-recipeName" placeholder="שם המתכון *">
+        
+        <select [(ngModel)]="recipeCategory" class="input-luxury input-with-margin">
+          <option value="" disabled>בחר קטגוריה *</option>
+          <option value="Cakes">עוגות ועוגיות</option>
+          <option value="Desserts">קינוחים</option>
+          <option value="Breakfast">ארוחות בוקר</option>
+          <option value="MainDish">מנות עיקריות</option>
+          <option value="Salads">סלטים ותוספות</option>
+          <option value="Baked">מאפים ולחמים</option>
+          <option value="Fish">דגים</option>
+          <option value="FastFood">מזון מהיר</option>
+          <option value="Soups">מרקים</option>
+        </select>
+
+        <!-- סקציית רכיבים -->
+        <div class="form-section">
+          <label class="form-label">רכיבים *</label>
+          <div *ngFor="let ing of ingredients; let i = index" class="ingredient-row">
+            <input type="text" [(ngModel)]="ing.product" class="input-luxury-ingredients" placeholder="שם המוצר">
+            <input type="text" [(ngModel)]="ing.amount" class="input-luxury-ingredients" placeholder="כמות">
+            <select [(ngModel)]="ing.unit" class="input-luxury-ingredients">
+              <option *ngFor="let unit of unitOptions" [value]="unit">{{ unit }}</option>
+            </select>
+            <button (click)="removeIngredient(i)" class="remove-btn">
+              <svg width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20 9L18.005 20.3463C17.8369 21.3026 17.0062 22 16.0353 22H7.96474C6.99379 22 6.1631 21.3026 5.99496 20.3463L4 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M21 6L15.375 6M3 6L8.625 6M8.625 6V4C8.625 2.89543 9.52043 2 10.625 2H13.375C14.4796 2 15.375 2.89543 15.375 4V6M8.625 6L15.375 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+            </button>
+          </div>
+          <button (click)="addIngredient()" class="add-btn-dashed">
+            <svg width="15" height="15" stroke-width="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M8 12H12M16 12H12M12 12V8M12 12V16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+              <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+            הוסף רכיב
+          </button>
+        </div>
+
+        <!-- סקציית שלבי הכנה -->
+        <div class="form-section">
+          <label class="form-label">שלבי הכנה *</label>
+          
+          <div *ngFor="let step of steps; let i = index" class="step-row">
+            
+            <label class="step-label">שלב {{ i + 1 }}</label>
+            
+            <div class="step-input-wrapper">
+              <textarea
+                [(ngModel)]="step.text" 
+                (blur)="onStepTextChange(i)"
+                class="input-luxury step-textarea" 
+                placeholder="תאר את השלב">
+              </textarea>
+              
+              <button (click)="removeStep(i)" class="remove-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M20 9L18.005 20.3463C17.8369 21.3026 17.0062 22 16.0353 22H7.96474C6.99379 22 6.1631 21.3026 5.99496 20.3463L4 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                  <path d="M21 6L15.375 6M3 6L8.625 6M8.625 6V4C8.625 2.89543 9.52043 2 10.625 2H13.375C14.4796 2 15.375 2.89543 15.375 4V6M8.625 6L15.375 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+              </button>
+            </div>
+            
+          </div>
+          
+          <button (click)="addStep()" class="add-btn-dashed">
+            <svg width="15" height="15" stroke-width="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M8 12H12M16 12H12M12 12V8M12 12V16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+              <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+            הוסף שלב
+          </button>
+        </div>
+        
+        <!-- תזכורת רכיבים שלא הוזכרו בשלבים -->
+        <div *ngIf="getUnusedIngredients().length > 0" class="unused-ingredients-reminder">
+          <div class="unused-ingredients-label">רכיבים שלא כתבת בשלבים:</div>
+          <div class="unused-ingredients-list">
+            {{ getUnusedIngredients().join(', ') }}
+          </div>
+        </div>
+
+        <div class="time-type-grid">
+          <input type="number" [(ngModel)]="preparationTime" class="input-luxury-ingredients" placeholder="זמן הכנה (דקות)">
+          <select [(ngModel)]="recipeType" class="input-luxury">
+            <option value="Meat">בשרי</option>
+            <option value="Dairy">חלבי</option>
+            <option value="Parve">פרווה</option>
+          </select>
+        </div>
+
+        <div class="image-upload-area">
+          <input type="file" #fileInput (change)="onImageSelected($event)" accept="image/*" class="hidden-file-input">
+          <button (click)="fileInput.click()" class="input-luxury image-select-btn">
+            {{ selectedImage ? '✅ ' + selectedImage.name : 'בחר תמונה' }}
+          </button>
+          <div *ngIf="imagePreview" class="image-preview-wrapper">
+            <img [src]="imagePreview" class="image-preview">
+          </div>
+        </div>
+
+        <div *ngIf="uploadError" class="upload-error">
+          ⚠️ {{ uploadError }}
+        </div>
+
+        <button class="btn-gold" (click)="editingRecipeId ? updateRecipe() : uploadRecipe()">
+          {{ editingRecipeId ? 'שמור שינויים' : 'פרסם מתכון' }}
+        </button>
+        
+        <div *ngIf="uploadMessage" class="upload-success">
+          {{ uploadMessage }}
+        </div>
+      </div>
+    </div>
+
+
+    <!-- סקשן שליחת בקשה למנהל -->
+    <div *ngIf="activeSection === 'request-permission'">
+      <h2 class="section-title-no-margin">שלח בקשה להרשאות העלאה</h2>
+      
+      <div class="request-form-container">
+        
+        <p class="request-description">
+          הסבר למנהל מדוע ברצונך לקבל הרשאות להעלות מתכונים. 
+          ההודעה תעזור למנהל להבין את הבקשה שלך ולקבל החלטה.
+        </p>
+        
+        <div class="request-field">
+          <label class="request-label">
+            הודעה למנהל (עד 500 תווים) *
+          </label>
+          <textarea 
+            [(ngModel)]="requestMessageText" 
+            class="input-luxury request-textarea" 
+            placeholder="לדוגמה: שלום, אני אוהבת לבשל ואשמח לשתף את המתכונים שלי עם הקהילה..."
+            maxlength="500">
+          </textarea>
+          <div class="char-counter">
+            {{ requestMessageText.length }} / 500 תווים
+          </div>
+        </div>
+        
+        <div *ngIf="requestMessage" 
+             class="request-result-message"
+             [class.success]="requestMessage.includes('✅')"
+             [class.error]="!requestMessage.includes('✅')">
+          {{ requestMessage }}
+        </div>
+        
+        <button (click)="requestUploadPermission()" class="btn-gold">
+          שלח בקשה למנהל
+        </button>
+        
+        <button (click)="activeSection = 'favorites'" class="btn-secondary">
+          ביטול
+        </button>
+        
+      </div>
+    </div>
+
+    <div *ngIf="activeSection === 'profile'">
+      <h2 class="section-title-no-margin">הפרופיל שלי</h2>
+      <p class="profile-description">כאן תוכל לראות ולערוך את הפרטים האישיים שלך.</p>
+    </div>
+
+  </main>
+</div>

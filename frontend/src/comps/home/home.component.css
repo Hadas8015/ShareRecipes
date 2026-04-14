@@ -1,0 +1,284 @@
+/* 1. חובה שפקודת ה-import תהיה בשורה הראשונה ממש */
+@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@100;300;400&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+
+/* עיצוב גלובלי לדף הבית */
+.home-dark-master {
+  background-color: #0d0d0d;
+  color: #C5A059;
+  overflow-x: hidden;
+  font-family: 'Heebo', 'Playfair Display', sans-serif;
+}
+
+/* Hero Section */
+.hero-premium {
+  height: 95vh;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.hero-img {
+  position: absolute;
+  top: 0; 
+  left: 0; 
+  width: 100%; 
+  height: 100%;
+  background-image: url('https://images.unsplash.com/photo-1559339352-11d035aa65de?q=80&w=2074');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.5;
+  z-index: 1;
+}
+
+.hero-overlay-dark {
+  position: absolute;
+  top: 0; 
+  left: 0; 
+  width: 100%; 
+  height: 100%;
+  background: radial-gradient(circle, transparent 0%, #000 100%);
+  z-index: 2;
+}
+
+.hero-content-center { 
+  position: relative; 
+  z-index: 3; 
+  padding: 0 20px; 
+}
+
+.gold-subtitle { 
+  letter-spacing: 8px; 
+  font-size: 0.8rem; 
+  margin-bottom: 20px; 
+  opacity: 0.8; 
+  font-family: 'Playfair Display', serif;
+}
+
+.main-title-luxury { 
+  font-size: 3.8rem;
+  color: #C5A059; 
+  margin-bottom: 25px; 
+  line-height: 1.2; 
+  font-weight: 700;
+  font-family: 'Frank Ruhl Libre', serif;
+}
+
+.highlight-text { 
+  color: #fff; 
+  opacity: 0.9; 
+}
+
+.hero-desc { 
+  color: #fff; 
+  font-weight: 300; 
+  font-size: 1.2rem; 
+  max-width: 600px; 
+  margin: 0 auto 40px; 
+  opacity: 0.7; 
+}
+
+/* Collections Section */
+.collections-section { 
+  padding: 100px 0; 
+  background: #080808; 
+  border-top: 1px solid #1a1a1a; 
+}
+
+.section-intro { 
+  text-align: center; 
+  margin-bottom: 60px; 
+}
+
+.section-intro h2 { 
+  font-size: 2.8rem; 
+  color: #C5A059; 
+}
+
+.divider-gold { 
+  width: 60px; 
+  height: 1px; 
+  background: #C5A059; 
+  margin: 15px auto; 
+}
+
+.collections-grid { 
+  display: grid; 
+  grid-template-columns: repeat(3, 1fr); 
+  gap: 30px; 
+  height: 450px; 
+  padding: 0 40px; 
+}
+
+/* אפקט שיקוף לתמונות */
+.collection-item { 
+  position: relative; 
+  background-size: cover; 
+  background-position: center; 
+  cursor: pointer; 
+  transition: 0.8s cubic-bezier(0.2, 1, 0.3, 1); 
+  filter: grayscale(100%);
+  -webkit-box-reflect: below 2px linear-gradient(transparent, transparent, rgba(255, 255, 255, 0.1));
+}
+
+.collection-item:hover { 
+  filter: grayscale(0%); 
+  transform: scale(1.02); 
+}
+
+/* תמונות ייחודיות לכל קולקציה */
+.collection-pastry {
+  background-image: url('https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?q=80&w=800');
+}
+
+.collection-chef {
+  background-image: url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=800');
+}
+
+.collection-plating {
+  background-image: url('https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800');
+}
+
+.item-overlay { 
+  position: absolute; 
+  inset: 0; 
+  background: rgba(0,0,0,0.5); 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  transition: 1s;
+}
+
+.item-overlay h3 { 
+  color: #fff; 
+  font-size: 1.6rem; 
+  letter-spacing: 2px; 
+  border: 1px solid rgba(255,255,255,0.2); 
+  padding: 12px 25px; 
+}
+
+/* Features Section (הסטנדרט שלנו) */
+.features-with-bg {
+  position: relative;
+  padding: 120px 0;
+  padding-bottom: 180px;
+  background-image: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.9)), url('../../comps/pic/standarts.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+.features-overlay {
+  position: absolute;
+  top: 0; 
+  left: 0; 
+  width: 100%; 
+  height: 100%;
+  background: rgba(0, 0, 0, 0.88);
+  z-index: 1;
+}
+
+.container-relative { 
+  position: relative; 
+  z-index: 2; 
+  max-width: 1200px; 
+  margin: 0 auto; 
+  padding: 0 20px; 
+}
+
+.features-grid-v2 { 
+  display: grid; 
+  grid-template-columns: repeat(3, 1fr); 
+  gap: 30px; 
+}
+
+.feature-card-dark {
+  background: rgba(0, 0, 0, 0.95);
+  border: 1px solid #222;
+  padding: 40px;
+  transition: 0.4s;
+}
+
+.feature-card-dark:hover { 
+  border-color: #C5A059; 
+  transform: translateY(-5px); 
+}
+
+.camel-text { 
+  color: #C5A059; 
+  font-weight: 400; 
+  margin-bottom: 15px; 
+  font-size: 1.4rem; 
+}
+
+.cream-text { 
+  color: #E8D5B5; 
+  line-height: 1.7; 
+  font-size: 0.95rem; 
+  font-weight: 300; 
+}
+
+/* CTA Section - מסך מלא בסוף הדף */
+.bottom-cta { 
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.9)), url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=2070');
+  background-attachment: fixed; 
+  background-size: cover; 
+  text-align: center;
+  position: relative;
+  z-index: 10;
+}
+
+.cta-title {
+  color: white;
+}
+
+/* כפתור בוטיק מעודכן */
+.boutique-btn {
+  border: 1px solid #C5A059 !important;
+  box-shadow: none !important;
+  outline: none !important;
+  background: transparent;
+  color: #C5A059;
+  padding: 12px 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Heebo', sans-serif;
+}
+
+.boutique-btn:hover { 
+  background: #C5A059; 
+  color: #000; 
+}
+
+.card-content {
+  height: 300px;
+}
+
+.card-num {
+  padding-top: 10px;
+}
+
+.hero-img {
+  background-image: url('https://images.unsplash.com/photo-1559339352-11d035aa65de?q=80&w=2074');
+}
+
+.collection-pastry {
+  background-image: url('https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?q=80&w=800');
+}
+
+.collection-chef {
+  background-image: url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=800');
+}
+
+.collection-plating {
+  background-image: url('https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800');
+}
+
+.bottom-cta h2 {
+  color: white;
+}

@@ -1,0 +1,223 @@
+/* מעטפת הדף - רקע תמונה מלא */
+.auth-page-wrapper {
+  min-height: 50vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background-image: url('https://i.pinimg.com/1200x/f3/c8/af/f3c8af2bdcee6793b55c67d74b728024.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  padding: 40px 20px;
+}
+
+/* שכבת שקיפות שחורה על התמונה */
+.auth-bg-overlay {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.75);
+  z-index: 1;
+}
+
+/* כרטיס ההתחברות השחור */
+.auth-card-luxury {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 450px;
+  background: #0d0d0d;
+  border: 1px solid #222;
+  padding: 50px 40px;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+  text-align: center;
+}
+
+.auth-header .serif-font {
+  font-family: 'Playfair Display', serif;
+  color: #C5A059;
+  font-size: 2rem;
+  letter-spacing: 3px;
+  margin-bottom: 10px;
+}
+
+.gold-divider-center {
+  width: 50px;
+  height: 1px;
+  background: #C5A059;
+  margin: 0 auto 20px;
+}
+
+.auth-subtitle {
+  color: #E8D5B5;
+  font-family: 'Assistant', sans-serif;
+  font-weight: 300;
+  font-size: 1rem;
+  opacity: 0.8;
+  margin-bottom: 35px;
+}
+
+/* טאבים */
+.auth-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-bottom: 40px;
+  border-bottom: 1px solid #1a1a1a;
+}
+
+.auth-tabs button {
+  background: none;
+  border: none;
+  color: #E8D5B5;
+  padding-bottom: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  opacity: 0.5;
+  transition: 0.3s;
+  font-family: 'Assistant', sans-serif;
+}
+
+.auth-tabs button.active {
+  color: #C5A059;
+  opacity: 1;
+  border-bottom: 2px solid #C5A059;
+}
+
+/* טפסים */
+.luxury-form {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.input-group {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  max-width: 350px;
+  margin: 0 auto;
+}
+
+.input-group label {
+  color: #C5A059;
+  font-size: 0.85rem;
+  font-family: 'Assistant', sans-serif;
+}
+
+.input-group input {
+  background: #151515 !important;
+  border: 1px solid #222;
+  padding: 12px 15px;
+  color: #fff !important;
+  font-family: 'Assistant', sans-serif;
+  transition: 0.3s;
+  border-radius: 6px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: #C5A059;
+  background: #1a1a1a;
+}
+
+/* כפתור זהב מלא - באורך של 350px כמו ה-input */
+.gold-fill {
+  background: #C5A059 !important;
+  color: #000 !important;
+  font-weight: 600;
+  margin-top: 10px;
+  border: none;
+  padding: 15px;
+  cursor: pointer;
+  transition: 0.3s;
+  border-radius: 6px;
+  width: 100%;
+  max-width: 350px; /* אותו רוחב כמו input */
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+.gold-fill:hover {
+  background: #E8D5B5 !important;
+  transform: translateY(-2px);
+}
+
+/* הודעות - באורך של 350px כמו ה-input */
+.auth-message {
+  padding: 12px;
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+  font-family: 'Assistant', sans-serif;
+  border-radius: 6px;
+  width: 100%;
+  max-width: 350px; /* אותו רוחב כמו input */
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.error { 
+  color: #ff6b6b; 
+  background: rgba(255,107,107,0.1); 
+  border: 1px solid rgba(255,107,107,0.2); 
+}
+
+.success { 
+  color: #51cf66; 
+  background: rgba(81,207,102,0.1); 
+  border: 1px solid rgba(81,207,102,0.2); 
+}
+
+/* מניעת הפיכת הרקע ללבן בזמן השלמה אוטומטית (Autofill) */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus {
+  -webkit-text-fill-color: #fff !important;
+  -webkit-box-shadow: 0 0 0px 1000px #151515 inset !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* סידור העין בתוך ה-Input */
+.password-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.toggle-password {
+  position: absolute;
+  left: 10px;
+  background: none;
+  border: none;
+  color: #C5A059;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.6;
+  transition: 0.3s;
+  z-index: 5;
+}
+
+.toggle-password:hover {
+  opacity: 1;
+}
+
+.eye-icon {
+  font-size: 1.1rem;
+}
+
+/* ריווח מהצד כדי שהטקסט לא יתנגש בעין */
+.password-wrapper input {
+  padding-left: 40px; 
+}

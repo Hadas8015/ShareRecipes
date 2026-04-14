@@ -1,0 +1,478 @@
+<!-- דף פרטי מתכון - תצוגה מלאה כולל רכיבים, שלבים, דירוג, תגובות ומצב שף קולי -->
+
+<div class="recipe-details-page" dir="rtl">
+  <div class="main-recipe-container" *ngIf="recipe; else loading">
+
+    <!-- כפתור חזרה -->
+    <div class="back-navigation-wrapper">
+      <button class="back-navigation-btn" (click)="backToCategory()">
+        → חזרה ל{{ getCategoryHebrew() }}
+      </button>
+    </div>
+
+    <div class="recipe-content-layout">
+
+      <!-- עמודת פרטים משמאל -->
+      <div class="details-column">
+        <h1 class="recipe-header-title">{{ recipe.name }}</h1>
+
+        <div class="meta-info-row">
+          <span class="type-badge-styled" [class.meat]="recipe.type === 'Meat'" [class.dairy]="recipe.type === 'Dairy'"
+            [class.parve]="recipe.type === 'Parve'">
+            {{ getTypeHebrew(recipe.type) }}
+          </span> <span class="time-display">
+            <svg width="15px" height="15px" stroke-width="1" viewBox="0 0 23 21" fill="none"
+              xmlns="http://www.w3.org/2000/svg" color="#888">
+              <path d="M12 6L12 12L18 12" stroke="#888" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+              </path>
+              <path
+                d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
+                stroke="#888" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+            {{ recipe.preparation_time }} דקות
+          </span>
+        </div>
+
+        <!-- הועלה על ידי -->
+        <div *ngIf="recipe.uploader" class="uploader-compact">
+          <div (click)="goToUploaderProfile()" class="uploader-link">
+            <div class="uploader-avatar-small">
+              {{ recipe.uploader.name?.charAt(0) || '👤' }}
+            </div>
+            <div>
+              <div class="uploader-label">הועלה על ידי:</div>
+              <div class="uploader-name">{{ recipe.uploader.name }}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- רשימת רכיבים - לחיצה מסמנת כ"נלקח" -->
+        <h3 class="section-subtitle-with-top-border">מצרכים</h3>
+        <div *ngFor="let ing of recipe.ingredients; let i = index" class="ingredient-row" (click)="toggleIngredient(i)"
+          [style.text-decoration]="checkedIngredients.has(i) ? 'line-through' : 'none'"
+          [style.opacity]="checkedIngredients.has(i) ? '0.5' : '1'">
+          <strong class="ingredient-amount-highlight">{{ ing.amount }} {{ ing.unit }}</strong> - {{ ing.product }}
+        </div>
+      </div>
+
+      <!-- עמודת תמונה מימין -->
+      <div class="image-section">
+        <img [src]="'http://127.0.0.1:5000/' + recipe.image_path" class="main-img-styled">
+
+        <!-- כפתורי פעולה על התמונה -->
+        <div class="image-actions-overlay">
+          <button class="action-icon-btn" (click)="toggleFavorite()"
+            [title]="isFavorite ? 'הסר מהמועדפים' : 'הוסף למועדפים'">
+            {{ isFavorite ? '🤍' : '❤' }}
+          </button>
+
+          <button *ngIf="recipe.variation_paths?.length" class="action-icon-btn"
+            (click)="showVariations = !showVariations" title="הצג וריאציות">
+            <svg width="28px" height="28px" stroke-width="1" viewBox="0 0 24 24" fill="none"
+              xmlns="http://www.w3.org/2000/svg">
+              <path d="M6 12H12M18 12H12M12 12V6M12 12V18" stroke="#C5A059" stroke-width="1" stroke-linecap="round"
+                stroke-linejoin="round"></path>
+            </svg>
+          </button>
+
+          <!-- מחיקה - Admin בלבד -->
+          <button *ngIf="isAdmin()" class="action-icon-btn" (click)="deleteRecipe()" title="מחק מתכון">
+            <svg width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" fill="none"
+              xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M20 9L18.005 20.3463C17.8369 21.3026 17.0062 22 16.0353 22H7.96474C6.99379 22 6.1631 21.3026 5.99496 20.3463L4 9"
+                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+              <path
+                d="M21 6L15.375 6M3 6L8.625 6M8.625 6V4C8.625 2.89543 9.52043 2 10.625 2H13.375C14.4796 2 15.375 2.89543 15.375 4V6M8.625 6L15.375 6"
+                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- שלבי הכנה -->
+    <h3 class="section-subtitle">אופן ההכנה</h3>
+
+    <!-- מתכון חדש עם steps - לחיצה מסמנת כ"הושלם" -->
+    <div *ngIf="steps && steps.length > 0">
+      <div *ngFor="let step of steps; let i = index" (click)="toggleStepCompletion(i)" class="step-card">
+        <div class="step-card-content">
+          <div class="step-number-circle">
+            {{ i + 1 }}
+          </div>
+          <div class="step-text" [style.text-decoration]="isStepCompleted(i) ? 'line-through' : 'none'"
+            [style.opacity]="isStepCompleted(i) ? '0.6' : '1'">
+            {{ step }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- כפתור מצב שף קולי -->
+    <div *ngIf="steps && steps.length > 0" class="voice-chef-section">
+      <button class="voice-chef-btn" (click)="enterChefMode()" [disabled]="!recognitionSupported">
+        מצב שף קולי <svg width="20px" height="20px" stroke-width="1" viewBox="0 0 22 22" fill="none"
+          xmlns="http://www.w3.org/2000/svg" color="#000000">
+          <path d="M12 6L12 18" stroke="#000000" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path>
+          <path d="M9 9L9 15" stroke="#000000" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path>
+          <path d="M18 11L18 13" stroke="#000000" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+          </path>
+          <path d="M6 11L6 13" stroke="#000000" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path>
+          <path d="M15 7L15 17" stroke="#000000" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path>
+          <path
+            d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
+            stroke="#000000" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+      </button>
+      <p *ngIf="!recognitionSupported" class="voice-not-supported-msg">
+        הדפדפן שלך לא תומך בזיהוי קולי. יש לנסות Chrome או Edge.
+      </p>
+    </div>
+
+    <!-- אזור דירוג -->
+    <div class="rating-section">
+      <p class="rating-title">דרג את המתכון:</p>
+      <div class="star-rating-interactive">
+        <span *ngFor="let star of [1,2,3,4,5]" (click)="selectRating(star)"
+          [style.color]="(userRating || recipe.rating) >= star ? '#C5A059' : '#333'" class="rating-star">★</span>
+      </div>
+      <div *ngIf="recipe.rating_count > 0" class="rating-summary">
+        דירוג ממוצע: <strong class="rating-value">{{ recipe.rating }}</strong> (<strong>{{ recipe.rating_count
+          }}</strong> דירוגים)
+      </div>
+      <button *ngIf="userRating > 0" (click)="submitRating()" class="submit-rating-btn">שלח דירוג</button>
+    </div>
+
+    <!-- אזור תגובות -->
+    <div class="comments-section-styled">
+      <h3 class="section-subtitle">תגובות הקהילה ({{ comments.length }})</h3>
+
+      <!-- טופס תגובה - למשתמש מחובר -->
+      <div *ngIf="currentUser" class="comment-form">
+        <textarea [(ngModel)]="newCommentText" placeholder="מה דעתך על המתכון?" class="comment-textarea"></textarea>
+        <button (click)="addComment()" class="submit-comment-btn back-navigation-btn">שלח תגובה</button>
+      </div>
+
+      <div *ngIf="!currentUser" class="login-prompt">
+        <p>התחבר כדי להוסיף תגובה</p>
+      </div>
+
+      <!-- רשימת תגובות -->
+      <div *ngFor="let comment of comments" class="comment-card">
+        <!-- כפתור מחיקה - למנהל ולכותב התגובה בלבד - בצד שמאל למעלה -->
+<button *ngIf="isAdmin() || currentUser?.id === comment.user_id" 
+        (click)="deleteComment(comment.id)" 
+        class="delete-comment-btn" title="מחק תגובה">
+          <svg width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 9L18.005 20.3463C17.8369 21.3026 17.0062 22 16.0353 22H7.96474C6.99379 22 6.1631 21.3026 5.99496 20.3463L4 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M21 6L15.375 6M3 6L8.625 6M8.625 6V4C8.625 2.89543 9.52043 2 10.625 2H13.375C14.4796 2 15.375 2.89543 15.375 4V6M8.625 6L15.375 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+        </button>
+        <div class="comment-header">
+          <strong class="comment-author">{{ comment.user_name }}</strong>
+          <small class="comment-date">{{ formatDate(comment.created_at) }}</small>
+        </div>
+        <p class="comment-text">{{ comment.text }}</p>
+
+        <!-- לייק/דיסלייק - לא לתגובה שלי -->
+        <div *ngIf="!isMyComment(comment)" class="comment-actions">
+          <span (click)="toggleLike(comment.id, true)" class="reaction-btn"
+            [class.active]="hasUserReaction(comment.id, 'like')"
+            [class.inactive]="!hasUserReaction(comment.id, 'like')">
+            <svg width="20px" height="20px" stroke-width="1.5" viewBox="0 0 24 24"
+              [attr.fill]="hasUserReaction(comment.id, 'like') ? '#C5A059' : 'none'" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M16.4724 20H4.1C3.76863 20 3.5 19.7314 3.5 19.4V9.6C3.5 9.26863 3.76863 9 4.1 9H6.86762C7.57015 9 8.22116 8.6314 8.5826 8.02899L11.293 3.51161C11.8779 2.53688 13.2554 2.44422 13.9655 3.33186C14.3002 3.75025 14.4081 4.30635 14.2541 4.81956L13.2317 8.22759C13.1162 8.61256 13.4045 9 13.8064 9H18.3815C19.7002 9 20.658 10.254 20.311 11.5262L18.4019 18.5262C18.1646 19.3964 17.3743 20 16.4724 20Z"
+                stroke="#C5A059" stroke-width="1.5" stroke-linecap="round"></path>
+              <path d="M7 20L7 9" stroke="#C5A059" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              </path>
+            </svg>
+            {{ comment.likes_count }}
+          </span>
+          <span (click)="toggleLike(comment.id, false)" class="reaction-btn"
+            [class.active]="hasUserReaction(comment.id, 'dislike')"
+            [class.inactive]="!hasUserReaction(comment.id, 'dislike')">
+            <svg width="20px" height="20px" stroke-width="1.5" viewBox="0 0 24 24"
+              [attr.fill]="hasUserReaction(comment.id, 'dislike') ? '#C5A059' : 'none'"
+              xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M16.4724 3.5H4.1C3.76863 3.5 3.5 3.76863 3.5 4.1V13.9C3.5 14.2314 3.76863 14.5 4.1 14.5H6.86762C7.57015 14.5 8.22116 14.8686 8.5826 15.471L11.293 19.9884C11.8779 20.9631 13.2554 21.0558 13.9655 20.1681C14.3002 19.7497 14.4081 19.1937 14.2541 18.6804L13.2317 15.2724C13.1162 14.8874 13.4045 14.5 13.8064 14.5H18.3815C19.7002 14.5 20.658 13.246 20.311 11.9738L18.4019 4.97376C18.1646 4.10364 17.3743 3.5 16.4724 3.5Z"
+                stroke="#C5A059" stroke-width="1.5" stroke-linecap="round"></path>
+              <path d="M7 14.5L7 3.5" stroke="#C5A059" stroke-width="1.5" stroke-linecap="round"
+                stroke-linejoin="round"></path>
+            </svg>
+            {{ comment.dislikes_count }}
+          </span>
+        </div>
+        <div *ngIf="isMyComment(comment)" class="my-comment-note">
+          זו התגובה שלך
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- מודל וריאציות תמונה -->
+<div *ngIf="showVariations && recipe?.variation_paths?.length" (click)="showVariations = false"
+  class="variations-overlay">
+
+  <button (click)="nextVariation($event)" class="variation-nav-btn next">
+    <svg width="60px" height="60px" stroke-width="1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+      color="#C5A059">
+      <path d="M16 12H8M8 12L11.5 15.5M8 12L11.5 8.5" stroke="#C5A059" stroke-width="1" stroke-linecap="round"
+        stroke-linejoin="round"></path>
+      <path
+        d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
+        stroke="#C5A059" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path>
+    </svg>
+  </button>
+
+  <div (click)="$event.stopPropagation()" class="variation-content">
+
+    <button (click)="showVariations = false" class="variation-close-btn">
+      ✕
+    </button>
+
+    <img [src]="'http://127.0.0.1:5000/' + recipe.variation_paths[currentVariationIndex]" class="variation-image">
+
+    <div class="variation-counter">
+      {{ currentVariationIndex + 1 }} / {{ recipe.variation_paths.length }}
+    </div>
+  </div>
+
+  <button (click)="prevVariation($event)" class="variation-nav-btn prev">
+    <svg width="60px" height="60px" stroke-width="1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+      color="#C5A059">
+      <path d="M8 12H16M16 12L12.5 8.5M16 12L12.5 15.5" stroke="#C5A059" stroke-width="1" stroke-linecap="round"
+        stroke-linejoin="round"></path>
+      <path
+        d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
+        stroke="#C5A059" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path>
+    </svg>
+  </button>
+</div>
+
+
+<!-- ==================== CHEF MODE - מסך מלא ==================== -->
+<div *ngIf="isChefMode" class="chef-mode-overlay" [ngSwitch]="chefModeScreen">
+
+  <!-- מסך פתיחה -->
+  <div *ngSwitchCase="'welcome'" class="chef-mode-screen">
+
+    <div class="chef-mode-header">
+      <button (click)="exitChefMode()" class="chef-mode-exit-btn">✕</button>
+      <h2 class="chef-mode-title">
+        מצב שף קולי</h2>
+      <div [class.listening]="isListening" [class.not-listening]="!isListening" class="chef-mode-status">
+        <span [class.active]="isListening" [class.inactive]="!isListening" class="chef-mode-status-dot"></span>
+        <span>{{ isListening ? 'מאזין...' : 'לא פעיל' }}</span>
+      </div>
+    </div>
+
+    <div class="welcome-content">
+      <div *ngIf="recipe.image_path" class="welcome-image">
+        <img [src]="'http://127.0.0.1:5000/' + recipe.image_path" [alt]="recipe.name" class="main-img-styled">
+      </div>
+
+      <div class="welcome-text">
+        <h1 class="welcome-title">{{ recipe.name }}</h1>
+
+        <div class="welcome-description">
+          <p>ברוכים הבאים למצב השף הקולי! 🎤</p>
+          <p>במצב זה תוכלו לבשל בעזרת פקודות קוליות פשוטות, מבלי לגעת במסך.</p>
+          <p>פשוט דברו בעברית, והמערכת תדריך אתכם שלב אחר שלב! 👨‍🍳</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="commands-panel">
+      <div class="commands-panel-title">פקודות קוליות זמינות:</div>
+      <div class="commands-grid">
+        <div class="command-item">
+          <span class="command-text">"רכיבים"</span>
+          <span class="command-description">צפייה ברכיבים</span>
+        </div>
+        <div class="command-item">
+          <span class="command-text">"שלב ראשון"</span>
+          <span class="command-description">התחלת בישול</span>
+        </div>
+        <div class="command-item">
+          <span class="command-text">"עצור"</span>
+          <span class="command-description">⏸️ עצירת הקראה</span>
+        </div>
+        <div class="command-item">
+          <span class="command-text">"המשך"</span>
+          <span class="command-description">▶️ המשך הקראה</span>
+        </div>
+        <div class="command-item">
+          <span class="command-text">"סגור"</span>
+          <span class="command-description">❌ סגירת החלון</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- מסך רכיבים -->
+  <div *ngSwitchCase="'ingredients'" class="chef-mode-screen">
+
+    <div class="chef-mode-header">
+      <button (click)="exitChefMode()" class="chef-mode-exit-btn">✕</button>
+      <h2 class="chef-mode-title">📋 רכיבים</h2>
+      <div [class.listening]="isListening" [class.not-listening]="!isListening" class="chef-mode-status">
+        <span [class.active]="isListening" [class.inactive]="!isListening" class="chef-mode-status-dot"></span>
+        <span>{{ isListening ? 'מאזין...' : 'לא פעיל' }}</span>
+      </div>
+    </div>
+
+    <div class="ingredients-list">
+      <div *ngFor="let ing of recipe.ingredients" class="ingredient-item">
+        <div class="ingredient-amount">{{ ing.amount }} {{ ing.unit }}</div>
+        <div class="ingredient-name">{{ ing.product }}</div>
+      </div>
+    </div>
+
+    <div class="commands-panel">
+      <div class="commands-panel-title">פקודות קוליות זמינות:</div>
+      <div class="commands-grid">
+        <div class="command-item">
+          <span class="command-text">"שלב ראשון"</span>
+          <span class="command-description">התחלת בישול</span>
+        </div>
+        <div class="command-item">
+          <span class="command-text">"חזור לשלב בו הייתי"</span>
+          <span class="command-description">חזרה לשלב האחרון</span>
+        </div>
+        <div class="command-item">
+          <span class="command-text">"עצור"</span>
+          <span class="command-description">⏸️ עצירת הקראה</span>
+        </div>
+        <div class="command-item">
+          <span class="command-text">"המשך"</span>
+          <span class="command-description">▶️ המשך הקראה</span>
+        </div>
+        <div class="command-item">
+          <span class="command-text">"סגור"</span>
+          <span class="command-description">❌ סגירת החלון</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- מסך שלבים -->
+  <div *ngSwitchCase="'steps'" class="chef-mode-screen">
+
+    <div class="chef-mode-header">
+      <button (click)="exitChefMode()" class="chef-mode-exit-btn">✕</button>
+      <h2 class="chef-mode-title">🎤 מצב שף קולי</h2>
+      <div [class.listening]="isListening" [class.not-listening]="!isListening" class="chef-mode-status">
+        <span [class.active]="isListening" [class.inactive]="!isListening" class="chef-mode-status-dot"></span>
+        <span>{{ isListening ? 'מאזין...' : 'לא פעיל' }}</span>
+      </div>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="progress-section">
+      <div class="progress-text">שלב {{ currentStepIndex + 1 }} מתוך {{ steps.length }}</div>
+      <div class="progress-bar-container">
+        <div [style.width.%]="((currentStepIndex + 1) / steps.length) * 100" class="progress-bar-fill"></div>
+      </div>
+      <div class="progress-completed">{{ completedSteps.size }} שלבים הושלמו ({{ getProgress() }}%)</div>
+    </div>
+
+    <!-- השלב הנוכחי - מועשר עם כמויות -->
+    <div class="current-step-section">
+      <div class="step-badge">שלב {{ currentStepIndex + 1 }}</div>
+      <div class="step-content">{{ getEnrichedStep(currentStepIndex) }}</div>
+    </div>
+
+    <!-- כפתור הצגת פקודות -->
+    <div class="toggle-commands-wrapper">
+      <button (click)="toggleCommands()" class="toggle-commands-btn">
+        <svg width="24px" height="24px" stroke-width="1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" color="#C5A059">
+          <path d="M12 7L12 13" stroke="#C5A059" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path>
+          <path d="M12 17.01L12.01 16.9989" stroke="#C5A059" stroke-width="1" stroke-linecap="round"
+            stroke-linejoin="round"></path>
+          <path
+            d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
+            stroke="#C5A059" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+        <span>{{ showCommands ? 'הסתר פקודות' : 'הצג פקודות קוליות' }}</span>
+      </button>
+    </div>
+
+    <!-- רשימת פקודות -->
+    <div *ngIf="showCommands" class="commands-panel">
+      <div class="commands-panel-title">פקודות קוליות זמינות:</div>
+      <div class="commands-grid">
+        <div class="command-item">
+          <span class="command-text">"רכיבים"</span>
+          <span class="command-description">הקראת רכיבים</span>
+        </div>
+        <div class="command-item">
+          <span class="command-text">"שלב הבא"</span>
+          <span class="command-description">מעבר לשלב הבא</span>
+        </div>
+        <div class="command-item">
+          <span class="command-text">"שלב קודם"</span>
+          <span class="command-description">חזרה לשלב קודם</span>
+        </div>
+        <div class="command-item">
+          <span class="command-text">"חזור על השלב"</span>
+          <span class="command-description">הקראה חוזרת</span>
+        </div>
+        <div class="command-item">
+          <span class="command-text">"עצור"</span>
+          <span class="command-description">⏸️ עצירת הקראה</span>
+        </div>
+        <div class="command-item">
+          <span class="command-text">"המשך"</span>
+          <span class="command-description">▶️ המשך הקראה</span>
+        </div>
+        <div class="command-item">
+          <span class="command-text">"סגור"</span>
+          <span class="command-description">❌ סגירת החלון</span>
+        </div>
+      </div>
+      <div *ngIf="lastCommand" class="last-command-display">
+        פקודה אחרונה: "{{ lastCommand }}"
+      </div>
+    </div>
+
+    <!-- כפתורי ניווט -->
+    <div class="nav-buttons">
+      <button (click)="previousStep()" [disabled]="currentStepIndex === 0" class="nav-btn">
+        <span class="nav-btn-icon">⏮</span>
+        <span>שלב קודם</span>
+      </button>
+
+      <button (click)="repeatStep()" class="nav-btn repeat-btn">
+        <span class="nav-btn-icon">🔄</span>
+        <span>חזור על השלב</span>
+      </button>
+
+      <button (click)="nextStep()" [disabled]="currentStepIndex === steps.length - 1" class="nav-btn">
+        <span>שלב הבא</span>
+        <span class="nav-btn-icon">⏭</span>
+      </button>
+    </div>
+
+    <!-- עיגולי שלבים -->
+    <div class="steps-overview">
+      <div *ngFor="let step of steps; let i = index" (click)="currentStepIndex = i; speakCurrentStep()"
+        [class.current]="i === currentStepIndex" [class.completed]="isStepCompleted(i)"
+        [class.incomplete]="!isStepCompleted(i) && i !== currentStepIndex" class="step-circle">
+        {{ i + 1 }}
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<ng-template #loading>
+  <div class="loading-container">
+    <h2>טוען מתכון...</h2>
+  </div>
+</ng-template>

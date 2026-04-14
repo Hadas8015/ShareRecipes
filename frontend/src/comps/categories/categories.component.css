@@ -1,0 +1,124 @@
+@import url('https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;500;700&family=Assistant:wght@200;300;400;600&display=swap');
+
+.categories-page-master {
+  background-color: #0d0d0d;
+  min-height: 100vh;
+  padding: 100px 0;
+  color: #C5A059;
+  font-family: 'Assistant', sans-serif;
+}
+
+.container-luxury {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+/* כותרת הדף - פונט אחיד ויוקרתי */
+.gallery-header {
+  text-align: center;
+  margin-bottom: 80px;
+}
+ .gold-subtitle, .category-name-serif {
+    font-family: "Assistant", sans-serif;
+
+}
+
+.main-title-luxury {
+  font-size: 3.5rem;
+  color: #C5A059;
+  font-weight: 700;
+  margin: 0;
+
+}
+
+.highlight-text-straight {
+  color: #fff;
+  font-style: normal; /* ביטול הנטייה */
+}
+
+.gold-divider-center {
+  width: 60px;
+  height: 1px;
+  background: #C5A059;
+  margin: 25px auto;
+}
+
+/* כרטיסיות הקטגוריה */
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 30px;
+}
+
+.category-card-premium {
+  position: relative;
+  height: 480px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 0.01cm solid #5b4929;
+  transition: 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.category-img {
+  width: 100%;
+  height: 100%;
+  /* הפקודה החשובה ביותר - שומרת על פרופורציות וחיתוך נכון */
+  object-fit: cover; 
+  /* הפקודה שביקשת - מוודאת שהמרכז תמיד יהיה גלוי */
+  object-position: center; 
+  
+  transition: 1.5s ease;
+  /* האפקט הדרמטי שלנו */
+  filter: brightness(0.6) contrast(1.1); 
+}
+
+.card-overlay {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  /* מעבר שחור עמוק מלמעלה למטה */
+  background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.9) 100%);
+  z-index: 1;
+  transition: opacity 1.5s ease; /* מעבר הדרגתי */
+}
+
+.card-content-overlay {
+  position: absolute;
+  bottom: 40px;
+  right: 30px;
+  z-index: 2;
+}
+
+.category-name-serif {
+  font-size: 2.5rem;
+  color: #C5A059;
+  margin: 5px 0;
+}
+
+.explore-text {
+  font-size: 0.8rem;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  opacity: 0.6;
+}
+
+.category-line {
+  width: 40px;
+  height: 1px;
+  background: #C5A059;
+  transition: 0.5s ease;
+}
+
+.category-card-premium:hover .category-img {
+  transform: scale(1.08);
+  filter: none; /* בhover - ללא פילטרים, 100% בהירות */
+}
+
+.category-card-premium:hover .card-overlay {
+  opacity: 0; /* הסרת השקיפות השחורה */
+}
+
+.category-card-premium:hover .category-line {
+  width: 100%;
+}

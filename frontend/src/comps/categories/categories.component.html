@@ -1,0 +1,35 @@
+<!-- דף קטגוריות - גריד כרטיסיות עם תמונות ושמות הקטגוריות -->
+
+<div class="categories-page-master" dir="rtl">
+  <div class="container-luxury">
+    
+    <!-- כותרת הדף -->
+    <header class="gallery-header">
+      <h3 class="gold-subtitle">OUR COLLECTIONS</h3>
+      <h1 class="main-title-luxury">עולם של <span class="highlight-text-straight">טעמים.</span></h1>
+      <div class="gold-divider-center"></div>
+      <p class="section-desc">בחרו קטגוריה וגלו מתכונים שנבחרו בקפידה עבור המטבח שלכם</p>
+    </header>
+
+    <!-- גריד הקטגוריות -->
+    <div class="categories-grid">
+      <div 
+        class="category-card-premium" 
+        *ngFor="let cat of categories"
+        (click)="selectCategory(cat.english)"
+      >
+        <div class="card-image-wrapper">
+          <img [src]="cat.image" [alt]="cat.hebrew" class="category-img">
+          <div class="card-overlay"></div>
+          
+          <div class="card-content-overlay">
+            <span class="explore-text">Explore</span>
+            <h2 class="category-name-serif">{{ cat.hebrew }}</h2>
+            <div class="category-line"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

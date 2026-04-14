@@ -1,0 +1,52 @@
+<!-- Footer - לוגו, ניווט מהיר (דינמי לפי הרשאות), ופרטי יצירת קשר -->
+
+<footer class="footer-premium" dir="rtl">
+  <div class="footer-container">
+    <div class="footer-content">
+      
+      <!-- לוגו ותיאור -->
+      <div class="footer-brand">
+        <h3 class="footer-logo">THE CHEF'S TABLE</h3>
+        <div class="footer-divider-gold"></div>
+        <p class="footer-tagline">
+          פלטפורמה אקסקלוסיבית לשיתוף מתכונים,<br>
+          טכניקות והשראה קולינרית בשפה של שפים.
+        </p>
+      </div>
+
+      <!-- ניווט מהיר - קישורים משתנים לפי סטטוס המשתמש -->
+      <div class="footer-section">
+        <h4 class="footer-title">ניווט מהיר</h4>
+        <ul class="footer-links">
+          <li><a routerLink="/home">דף הבית</a></li>
+          <li><a routerLink="/categories">גלריית מתכונים</a></li>
+          <li *ngIf="isLoggedIn()"><a routerLink="/profile">אזור אישי</a></li>
+          <li *ngIf="isLoggedIn()"><a routerLink="/my-favorites">המועדפים שלי</a></li>
+          <li *ngIf="isAdmin()"><a routerLink="/admin">ניהול מערכת</a></li>
+          <li *ngIf="!isLoggedIn()"><a routerLink="/login">כניסה למערכת</a></li>
+        </ul>
+      </div>
+
+      <!-- יצירת קשר ורשתות חברתיות -->
+      <div class="footer-section">
+        <h4 class="footer-title">הצטרפו לקהילה</h4>
+        <ul class="contact-info">
+          <li><a href="mailto:info@chefstable.co.il">info@chefstable.co.il</a></li>
+          <li><a href="tel:+972-50-123-4567">050-123-4567</a></li>
+        </ul>
+        <div class="social-links">
+          <a href="#" class="social-link">INSTAGRAM</a>
+          <a href="#" class="social-link">FACEBOOK</a>
+        </div>
+      </div>
+      
+    </div>
+
+    <div class="footer-bottom">
+      <div class="footer-line"></div>
+      <p class="footer-copyright">
+        &copy; 2025 THE CHEF'S TABLE | ALL RIGHTS RESERVED
+      </p>
+    </div>
+  </div>
+</footer>

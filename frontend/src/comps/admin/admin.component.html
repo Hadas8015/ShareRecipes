@@ -1,0 +1,81 @@
+<!-- דף ניהול מערכת - טבלת בקשות ממתינות עם אפשרות אישור/דחייה -->
+
+<div class="admin-page-wrapper" dir="rtl">
+  
+  <!-- כותרת הדף -->
+  <header class="admin-header-section">
+    <button routerLink="/profile" class="btn-back-luxury">
+      <svg _ngcontent-ng-c1920314184="" width="35px" height="35px" stroke-width="1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path _ngcontent-ng-c1920314184="" d="M17 10.625H9.8C9.8 10.625 9.8 10.625 9.8 10.625C9.8 10.625 7 10.625 7 13.625C7 17 9.8 17 9.8 17H10.6" stroke="#C5A059" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+        </path><path _ngcontent-ng-c1920314184="" d="M13.5 14L17 10.625L13.5 7" stroke="#C5A059" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path>
+        <path _ngcontent-ng-c1920314184="" d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#C5A059" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+    <h1 class="admin-main-title">ניהול מערכת</h1>
+    <div class="gold-divider"></div>
+    <p class="admin-subtitle">בקשות ממתינות להרשאת העלאת מתכונים</p>
+  </header>
+
+  <!-- הודעות מערכת -->
+  <div *ngIf="message" class="system-message" 
+       [class.success-gold]="message.includes('✅')"
+       [class.error-red]="message.includes('❌')">
+    {{ message }}
+  </div>
+
+  <!-- מצב טעינה -->
+  <div *ngIf="loading" class="loading-status">
+    <span class="spinner"></span> ⏳ טוען נתונים...
+  </div>
+
+  <!-- מצב ריק - אין בקשות -->
+  <div *ngIf="!loading && pendingRequests.length === 0" class="empty-state-card">
+    <p>אין בקשות חדשות הממתינות לאישור כרגע.</p>
+  </div>
+
+  <!-- טבלת בקשות -->
+  <div *ngIf="!loading && pendingRequests.length > 0" class="table-container-luxury">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>משתמש</th>
+          <th>אימייל</th>
+          <th>הודעה</th>
+          <th class="text-center">פעולות ניהול</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let req of pendingRequests; let i = index">
+          <td class="user-name-cell">
+            <span class="index-badge">{{ i + 1 }}</span>
+            {{ req.name }}
+          </td>
+          <td class="email-cell">{{ req.email }}</td>
+          <td>
+            <button class="btn-view-msg" (click)="openMessageModal(req.request_message, req.name)">
+              הצג הודעה
+            </button>
+          </td>
+          <td class="actions-cell">
+            <button class="btn-action approve" (click)="approveUser(req.id, req.name)">אישור הרשאה</button>
+            <button class="btn-action reject" (click)="rejectUser(req.id, req.name)">דחייה</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- מודל הצגת הודעה -->
+  <div class="modal-overlay-luxury" *ngIf="isModalOpen" (click)="closeMessageModal()">
+    <div class="modal-card-premium" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2 class="recipe-name-serif">הודעה מ-{{ currentUserName }}</h2>
+        <button class="close-modal-btn" (click)="closeMessageModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <p class="message-content-text">{{ currentMessage }}</p>
+      </div>
+    </div>
+  </div>
+
+</div>

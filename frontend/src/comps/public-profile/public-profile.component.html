@@ -1,0 +1,112 @@
+<!-- פרופיל ציבורי - סיידבר עם פרטי המשתמש + גריד המתכונים שהעלה -->
+
+<div class="profile-page-wrapper" dir="rtl" *ngIf="!loading && profile">
+  
+  <!-- כפתור חזרה -->
+  <button class="back-button-top" (click)="goBack()">
+    →
+  </button>
+
+  <!-- סיידבר - פרטי המשתמש -->
+  <aside class="profile-sidebar-card">
+    <div class="avatar-circle">
+      {{ profile.name?.charAt(0) || '👤' }}
+    </div>
+    
+    <h1 class="user-name-serif">{{ profile.name }}</h1>
+    
+    <!-- תפקיד המשתמש -->
+    <div class="status-pill-black" 
+         [class.admin]="profile.role === 'Admin'"
+         [class.uploader]="profile.role === 'Uploader'"
+         [class.reader]="profile.role === 'Reader'">
+      <span *ngIf="profile.role === 'Admin'">מנהל</span>
+      <span *ngIf="profile.role === 'Uploader'">משתמש תוכן</span>
+      <span *ngIf="profile.role === 'Reader'">משתמש רגיל</span>
+    </div>
+
+    <!-- ביוגרפיה -->
+    <div class="bio-area">
+      <div *ngIf="profile.bio">
+        <p class="bio-display-text">{{ profile.bio }}</p>
+      </div>
+      <div *ngIf="!profile.bio">
+        <p class="bio-display-text bio-display-text--empty">המשתמש לא הוסיף תיאור אישי</p>
+      </div>
+    </div>
+
+    <!-- סטטיסטיקות -->
+    <div class="profile-stats">
+      <div class="profile-stat-item">
+        העלה {{ profile.recipe_count || 0 }} מתכונים
+      </div>
+      <div class="profile-stat-item">
+        <svg width="20" height="17" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3 13C6.6 5 17.4 5 21 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+          <path d="M12 17C10.3431 17 9 15.6569 9 14C9 12.3431 10.3431 11 12 11C13.6569 11 15 12.3431 15 14C15 15.6569 13.6569 17 12 17Z" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg> {{ profile.profile_views || 0 }} צפיות
+      </div>
+      <div>
+        הצטרף ב{{ formatDate(profile.created_at) }}
+      </div>
+    </div>
+  </aside>
+
+  <div class="vertical-line-divider"></div>
+
+  <!-- אזור המתכונים -->
+  <main class="content-area" id="mainContentScroll">
+    <div *ngIf="profile.recipes && profile.recipes.length > 0">
+      <h2 class="recipes-section-title">המתכונים של {{ profile.name }}</h2>
+      
+      <!-- גריד מתכונים -->
+      <div class="recipes-grid">
+        <div class="recipe-card-premium" *ngFor="let recipe of profile.recipes" (click)="goToRecipe(recipe.id)">
+          <div class="card-image-wrapper">
+            <img [src]="'http://127.0.0.1:5000/' + recipe.image_path" [alt]="recipe.name" class="recipe-img">
+            <div class="card-overlay"></div>
+            
+            <div class="card-content-overlay">
+              <div class="tags-row">
+                <span class="recipe-type-badge" 
+                      [class.meat]="recipe.type === 'Meat'" 
+                      [class.dairy]="recipe.type === 'Dairy'" 
+                      [class.parve]="recipe.type === 'Parve'">
+                  {{ recipe.type === 'Meat' ? 'בשרי' : recipe.type === 'Dairy' ? 'חלבי' : 'פרווה' }}
+                </span>
+              </div>
+              
+              <h2 class="recipe-name-serif">{{ recipe.name }}</h2>
+              
+              <div class="recipe-meta">
+                <span class="recipe-time">{{ recipe.preparation_time }} דק'</span>
+                <span class="separator">|</span>
+                <div class="stars-display">
+                  <span *ngFor="let star of [1, 2, 3, 4, 5]" class="star" [class.filled]="recipe.rating >= star">★</span>
+                </div>
+              </div>
+              <div class="category-line"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- מצב ריק - אין מתכונים -->
+    <div *ngIf="!profile.recipes || profile.recipes.length === 0" class="no-recipes-section">
+      <div class="no-recipes-icon">📝</div>
+      <h3 class="no-recipes-title">{{ profile.name }} עדיין לא העלה מתכונים</h3>
+      <p class="no-recipes-subtitle">בקרו שוב בהזדמנות אחרת</p>
+    </div>
+  </main>
+</div>
+
+<!-- מצב טעינה -->
+<div *ngIf="loading" class="loading-state">
+  ⏳ טוען פרופיל...
+</div>
+
+<!-- מצב שגיאה -->
+<div *ngIf="!loading && !profile" class="error-state">
+  ❌ המשתמש לא נמצא
+</div>

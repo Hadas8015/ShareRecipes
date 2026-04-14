@@ -1,0 +1,209 @@
+@import url('https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;500;700&family=Assistant:wght@200;300;400;600&display=swap');
+
+.admin-page-wrapper {
+  background-color: #0d0d0d;
+  min-height: 100vh;
+  padding: 80px 40px;
+  color: #E8D5B5;
+    font-family: "MS PGothic", "Assistant", sans-serif;
+  direction: rtl;
+}
+
+/* כותרות */
+.admin-header-section {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.admin-main-title {
+    font-family: "MS PGothic", "Assistant", sans-serif;
+  font-size: 3.5rem;
+  color: #C5A059;
+  margin: 0;
+}
+
+.gold-divider {
+  width: 80px;
+  height: 1px;
+  background: #C5A059;
+  margin: 20px auto;
+}
+
+.admin-subtitle {
+  color: #888;
+  font-size: 1.1rem;
+  letter-spacing: 1px;
+}
+
+.btn-back-luxury {
+  background: none;
+  margin-top: 20px;
+  cursor: pointer;
+  border: none;
+  padding: 0;
+}
+
+.btn-back-luxury svg:hover {
+  background: #c59f5940;
+  color: #000;
+  border-radius: 50%;
+}
+
+/* טבלה יוקרתית */
+.table-container-luxury {
+  max-width: 1100px;
+  margin: 0 auto;
+  background: #111;
+  border: 1px solid #222;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-table th {
+  background: #1a1a1a;
+  color: #C5A059;
+  padding: 20px;
+  text-align: right;
+    font-family: "MS PGothic", "Assistant", sans-serif;
+  border-bottom: 1px solid #222;
+}
+
+.admin-table td {
+  padding: 20px;
+  border-bottom: 1px solid #1a1a1a;
+  vertical-align: middle;
+}
+
+.user-name-cell {
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.index-badge {
+  background: #222;
+  color: #C5A059;
+  width: 25px;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 0.8rem;
+}
+
+.email-cell { color: #888; }
+
+/* כפתורי פעולה */
+.btn-view-msg {
+  background: rgba(197, 159, 89, 0);
+  border: 1px solid #C5A059;
+  color: #C5A059;
+  padding: 6px 15px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-view-msg:hover { background: #C5A059; color: #000; }
+
+.actions-cell {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.btn-action {
+  padding: 8px 20px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.btn-action.approve { background: #C5A059; color: #000; }
+.btn-action.reject { background: transparent; border: 1px solid #C5A059; color: #C5A059; }
+
+.btn-action.approve:hover { background-color: #d3b987;}
+.btn-action.reject:hover { background: #c59f592c;}
+/* הודעות מערכת */
+.system-message {
+  max-width: 600px;
+  margin: 0 auto 30px;
+  padding: 15px;
+  text-align: center;
+  border-radius: 4px;
+}
+.success-gold { background: rgba(197, 160, 89, 0.2); border: 1px solid #C5A059; color: #C5A059; }
+.error-red { background: rgba(255, 77, 77, 0.2); border: 1px solid #ff4d4d; color: #ff4d4d; }
+
+/* מודל */
+.modal-overlay-luxury {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.9);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(5px);
+}
+
+.modal-card-premium {
+  background: #111;
+  width: 500px;
+  border: 1px solid #C5A059;
+  padding: 40px;
+  position: relative;
+  box-shadow: 0 0 50px rgba(197, 160, 89, 0.1);
+}
+
+.recipe-name-serif {
+    font-family: "MS PGothic", "Assistant", sans-serif;
+  color: #C5A059;
+  margin: 0;
+}
+
+.message-content-text {
+  line-height: 1.8;
+  color: #e0e0e0;
+  font-size: 1.1rem;
+  margin: 30px 0;
+}
+
+.btn-gold-fill {
+  background: #C5A059;
+  color: #000;
+  border: none;
+  padding: 12px 30px;
+  width: 100%;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.close-modal-btn {
+  position: absolute;
+  top: 20px; left: 20px;
+  background: none; border: none; color: #888;
+  font-size: 1.5rem; cursor: pointer;
+}
+
+/* מצב ריק */
+.empty-state-card {
+  text-align: center;
+  padding: 60px;
+  background: #111;
+  max-width: 500px;
+  margin: 0 auto;
+  border: 1px solid #222;
+}
+.icon-circle {
+  font-size: 3rem;
+  margin-bottom: 20px;
+}

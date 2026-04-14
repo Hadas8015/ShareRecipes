@@ -1,0 +1,121 @@
+<!-- דף כניסה/הרשמה - טאבים למעבר בין הטפסים, עם הצגת/הסתרת סיסמה -->
+
+<div class="auth-page-wrapper" dir="rtl">
+  <div class="auth-bg-overlay"></div>
+  
+  <div class="auth-card-luxury">
+    <div class="auth-header">
+      <h2 class="serif-font">THE CHEF'S TABLE</h2>
+      <div class="gold-divider-center"></div>
+      <p class="auth-subtitle">{{ activeTab === 'login' ? 'כניסה למטבח המקצועי' : 'הצטרפות לקהילת השפים' }}</p>
+    </div>
+
+    <!-- טאבים למעבר בין כניסה להרשמה -->
+    <div class="auth-tabs">
+      <button [class.active]="activeTab === 'login'" (click)="switchTab('login')">כניסה</button>
+      <button [class.active]="activeTab === 'register'" (click)="switchTab('register')">הרשמה</button>
+    </div>
+
+    <!-- הודעות שגיאה והצלחה -->
+    <div *ngIf="errorMessage" class="auth-message error">
+      {{ errorMessage }}
+    </div>
+    <div *ngIf="successMessage" class="auth-message success">
+      {{ successMessage }}
+    </div>
+
+    <!-- טופס כניסה -->
+    <form *ngIf="activeTab === 'login'" (ngSubmit)="login()" class="luxury-form">
+      <div class="input-group">
+        <label>אימייל</label>
+        <input type="email" [(ngModel)]="email" name="email" placeholder="chef@example.com" required>
+      </div>
+      
+      <div class="input-group password-group">
+        <label>סיסמה</label>
+        <div class="password-wrapper">
+          <input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="password" name="password" placeholder="••••••••" required>
+          <button type="button" class="toggle-password" (click)="showPassword = !showPassword">
+            <span class="eye-icon" *ngIf="!showPassword">
+              <svg width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M19.5 16L17.0248 12.6038" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M12 17.5V14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M4.5 16L6.96895 12.6124" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M3 8C6.6 16 17.4 16 21 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+            </span>
+            <span class="eye-icon" *ngIf="showPassword">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3 13C6.6 5 17.4 5 21 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M12 17C10.3431 17 9 15.6569 9 14C9 12.3431 10.3431 11 12 11C13.6569 11 15 12.3431 15 14C15 15.6569 13.6569 17 12 17Z" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+            </span>
+          </button>
+        </div>
+      </div>
+      
+      <button type="submit" class="boutique-btn gold-fill">כניסה למערכת</button>
+    </form>
+
+    <!-- טופס הרשמה -->
+    <form *ngIf="activeTab === 'register'" (ngSubmit)="register()" class="luxury-form">
+      <div class="input-group">
+        <label>שם מלא</label>
+        <input type="text" [(ngModel)]="name" name="name" placeholder="השף המבשל" required>
+      </div>
+      
+      <div class="input-group">
+        <label>אימייל</label>
+        <input type="email" [(ngModel)]="email" name="email" placeholder="chef@example.com" required>
+      </div>
+      
+      <div class="input-group password-group">
+        <label>סיסמה</label>
+        <div class="password-wrapper">
+          <input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="password" name="password" placeholder="לפחות 4 תווים" required>
+          <button type="button" class="toggle-password" (click)="showPassword = !showPassword">
+            <span class="eye-icon" *ngIf="!showPassword">
+              <svg width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M19.5 16L17.0248 12.6038" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M12 17.5V14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M4.5 16L6.96895 12.6124" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M3 8C6.6 16 17.4 16 21 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+            </span>
+            <span class="eye-icon" *ngIf="showPassword">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3 13C6.6 5 17.4 5 21 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M12 17C10.3431 17 9 15.6569 9 14C9 12.3431 10.3431 11 12 11C13.6569 11 15 12.3431 15 14C15 15.6569 13.6569 17 12 17Z" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+            </span>
+          </button>
+        </div>
+      </div>
+      
+      <div class="input-group password-group">
+        <label>אימות סיסמה</label>
+        <div class="password-wrapper">
+          <input [type]="showConfirmPassword ? 'text' : 'password'" [(ngModel)]="confirmPassword" name="confirmPassword" placeholder="הזן שוב את הסיסמה" required>
+          <button type="button" class="toggle-password" (click)="showConfirmPassword = !showConfirmPassword">
+            <span class="eye-icon" *ngIf="!showConfirmPassword">
+              <svg width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M19.5 16L17.0248 12.6038" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M12 17.5V14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M4.5 16L6.96895 12.6124" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M3 8C6.6 16 17.4 16 21 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+            </span>
+            <span class="eye-icon" *ngIf="showConfirmPassword">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3 13C6.6 5 17.4 5 21 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M12 17C10.3431 17 9 15.6569 9 14C9 12.3431 10.3431 11 12 11C13.6569 11 15 12.3431 15 14C15 15.6569 13.6569 17 12 17Z" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+            </span>
+          </button>
+        </div>
+      </div>
+      
+      <button type="submit" class="boutique-btn gold-fill">יצירת חשבון שף</button>
+    </form>
+  </div>
+</div>

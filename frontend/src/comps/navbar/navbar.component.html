@@ -1,0 +1,27 @@
+<!-- Navbar - לוגו, קישורי ניווט (דינמיים לפי הרשאות), וכפתור כניסה/התנתקות -->
+
+<nav class="navbar-luxury" dir="rtl">
+  <div class="nav-container">
+    
+    <!-- לוגו -->
+    <div class="nav-brand" routerLink="/home">
+      <span class="logo-gold">THE CHEF'S <span class="logo-white">TABLE</span></span>
+    </div>
+    
+    <!-- קישורי ניווט -->
+    <div class="nav-links">
+      <a routerLink="/home" routerLinkActive="active" class="nav-link">בית</a>
+      <a routerLink="/categories" routerLinkActive="active" class="nav-link">מתכונים</a>
+      
+      <!-- Admin בלבד -->
+      <a *ngIf="isAdmin()" routerLink="/admin" routerLinkActive="active" class="nav-link admin-link">ניהול</a>
+      
+      <!-- משתמש מחובר בלבד -->
+      <a *ngIf="isLoggedIn()" routerLink="/profile" routerLinkActive="active" class="nav-link">אזור אישי</a>
+
+      <!-- כפתור כניסה/התנתקות -->
+      <button *ngIf="isLoggedIn()" (click)="logout()" class="nav-auth-btn logout">התנתקות</button>
+      <a *ngIf="!isLoggedIn()" routerLink="/login" class="nav-auth-btn login">כניסת שפים</a>
+    </div>
+  </div>
+</nav>

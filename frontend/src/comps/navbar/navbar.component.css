@@ -1,0 +1,67 @@
+.navbar-luxury {
+  height: 70px;
+  background: rgba(0, 0, 0, 0.6);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid #C5A059;
+  display: flex; 
+  align-items: center;
+  position: sticky; 
+  top: 0; 
+  z-index: 1000;
+}
+
+.nav-container { 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  width: 100%; 
+  max-width: 1400px; 
+  margin: 0 auto; 
+  padding: 0 40px; 
+}
+
+.logo-gold { 
+  font-family: 'Playfair Display', serif; 
+  font-size: 1.8rem; 
+  color: #C5A059; 
+  font-weight: 800; 
+  cursor: pointer; 
+}
+
+.logo-white {
+  color: #fff;
+}
+
+.nav-link { 
+  color: #C5A059 !important;
+  font-family: "Assistant", sans-serif;
+  text-decoration: none; 
+  margin-left: 25px; 
+  font-weight: 500; 
+  transition: 0.3s;
+}
+
+.nav-link:hover, 
+.active { 
+  color: #fff !important; 
+}
+
+.nav-auth-btn { 
+  padding: 10px 20px; 
+  border-radius: 4px; 
+  cursor: pointer; 
+  font-weight: 600; 
+  text-decoration: none; 
+}
+
+.login { 
+  background: #C5A059; 
+  color: #000 !important;
+  font-family: "Assistant", sans-serif;
+}
+
+.logout { 
+  background: transparent; 
+  border: 1px solid #444; 
+  color: #C5A059; 
+}

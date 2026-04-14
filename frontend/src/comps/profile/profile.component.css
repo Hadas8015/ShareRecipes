@@ -1,0 +1,798 @@
+@import url('https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;500;700&family=Assistant:wght@200;300;400;600&display=swap');
+
+.profile-page-wrapper {
+  background-color: #0d0d0d;
+  min-height: 100vh;
+  direction: rtl;
+  font-family: 'Assistant', sans-serif;
+  display: flex;
+  gap: 30px;
+  padding: 40px;
+}
+
+/* ========== כרטיס הפרופיל - sticky ========== */
+.profile-sidebar-card {
+  width: 380px;
+  position: sticky;
+  top: 40px;
+  align-self: flex-start;
+  background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.7)), 
+                    url('https://i.pinimg.com/736x/1b/6b/96/1b6b96d077a5a97db52bb3b2770ac7ef.jpg');
+  background-size: cover;
+  background-position: center;
+  border-radius: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 50px 30px;
+  border: 1px solid rgba(197, 160, 89, 0.3);
+  box-shadow: 0 25px 50px rgba(0,0,0,0.6);
+  z-index: 10;
+  max-height: calc(100vh - 80px);
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+
+.avatar-circle {
+  width: 100px;
+  height: 100px;
+  background-color: #C5A059;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  color: #000;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.user-name-serif {
+  color: #C5A059;
+  font-size: 2rem;
+  margin: 0 0 10px 0;
+}
+
+.user-email-serif {
+  color: #9c9c9c;
+  font-size: 0.9rem;
+  margin: 0 0 10px 0;
+}
+
+.status-pill-black {
+  background-color: #000;
+  color: #C5A059;
+  padding: 6px 30px;
+  border-radius: 30px;
+  font-weight: 600;
+  border: 1px solid #C5A059;
+  margin-bottom: 25px;
+}
+
+/* ========== אזור ביוגרפיה ========== */
+.bio-area {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 30px;
+  color: #fff;
+}
+
+.bio-display-text {
+  font-style: italic;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #e0e0e0;
+  margin-bottom: 10px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.edit-bio-btn {
+  background: none;
+  border: none;
+  color: #C5A059;
+  cursor: pointer;
+  font-size: 0.8rem;
+  text-decoration: underline;
+}
+
+.bio-textarea {
+  height: 70px;
+  margin-bottom: 10px;
+}
+
+.bio-buttons-row {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.bio-confirm-btn {
+  background: #C5A059;
+  border: none;
+  color: black;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.bio-cancel-btn {
+  background: none;
+  border: 1px solid #444;
+  color: #888;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* ========== תפריט ניווט ========== */
+.icons-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+}
+
+.nav-icon-btn {
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid #C5A059;
+  color: #C5A059;
+  font-size: 1.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.nav-icon-btn svg {
+  transition: color 0.3s;
+}
+
+.nav-icon-btn:hover {
+  background: #C5A059;
+  color: #000000;
+}
+
+.nav-icon-btn:hover svg {
+  color: #000000 !important;
+}
+
+.nav-icon-btn.logout-btn {
+  margin-top: 20px;
+}
+
+/* ========== הודעות סטטוס בסיידבר ========== */
+.status-message-base {
+  text-align: center;
+  font-size: 0.75rem;
+  padding: 12px;
+  border-radius: 8px;
+  line-height: 1.4;
+}
+
+.status-message-pending {
+  color: #888;
+  background: rgba(255, 193, 7, 0.1);
+  border: 1px solid rgba(255, 193, 7, 0.3);
+}
+
+.status-message-rejected {
+  color: #ef5350;
+  background: rgba(239, 83, 80, 0.1);
+  border: 1px solid rgba(239, 83, 80, 0.3);
+}
+
+.status-message-success {
+  color: #2ecc71;
+  background: rgba(46, 204, 113, 0.1);
+  border: 1px solid rgba(46, 204, 113, 0.3);
+  margin-top: 10px;
+}
+
+/* ========== הפרדה ========== */
+.vertical-line-divider {
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, rgba(197, 160, 89, 0.4), transparent);
+  flex-shrink: 0;
+}
+
+/* ========== תוכן ראשי ========== */
+.content-area {
+  flex: 1;
+  min-height: 100vh;
+}
+
+/* ========== כותרות סקשנים ========== */
+.section-title {
+  color: #C5A059;
+  font-size: 2.5rem;
+  margin-bottom: 30px;
+}
+
+.section-title-no-margin {
+  color: #C5A059;
+  font-size: 2.5rem;
+}
+
+/* ========== מצבי טעינה וריקנות ========== */
+.loading-state {
+  text-align: center;
+  padding: 50px;
+  color: #888;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 80px;
+}
+
+.empty-state-title {
+  color: #C5A059;
+  margin-bottom: 10px;
+}
+
+.empty-state-text {
+  color: #888;
+}
+
+/* ========== שדות קלט ========== */
+.input-luxury {
+  width: 100%;
+  background: #000;
+  border: 1px solid #333;
+  color: #fff;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+#input-luxury-recipeName {
+  width: 97.6%;
+}
+
+.input-luxury-ingredients {
+  background: #000;
+  border: 1px solid #333;
+  color: #fff;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.input-with-margin {
+  margin-bottom: 15px;
+}
+
+/* ========== גריד מתכונים ========== */
+.recipes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 25px;
+  margin-top: 30px;
+}
+
+/* ========== כרטיס מתכון ========== */
+.recipe-card-premium {
+  position: relative;
+  height: 350px;
+  overflow: hidden;
+  border: 1px solid #1a1a1a;
+  border-radius: 8px;
+}
+
+.recipe-card-premium:hover {
+  border-color: #C5A059;
+}
+
+.card-image-wrapper {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  cursor: pointer;
+}
+
+.recipe-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center !important;
+  filter: brightness(0.4) contrast(1.1);
+  transition: 1s ease;
+}
+
+.recipe-card-premium:hover .recipe-img {
+  transform: scale(1.1);
+  filter: brightness(0.6);
+}
+
+.card-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, transparent 40%, rgba(0,0,0,0.9) 100%);
+}
+
+.card-content-overlay {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  padding: 25px;
+  z-index: 2;
+}
+
+.recipe-name-serif {
+  font-size: 1.1rem;
+  color: #C5A059;
+  margin: 8px 0;
+}
+
+.recipe-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #fff;
+  opacity: 0.8;
+  font-size: 0.85rem;
+}
+
+.recipe-time {
+  color: #fff;
+}
+
+.separator {
+  color: #fff;
+}
+
+.stars-display {
+  display: flex;
+  gap: 2px;
+}
+
+.star {
+  color: #333;
+  font-size: 0.9rem;
+}
+
+.star.filled {
+  color: #C5A059;
+}
+
+.category-line {
+  width: 35px;
+  height: 1px;
+  background: #C5A059;
+  margin-top: 12px;
+  transition: 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+  display: block;
+}
+
+.recipe-card-premium:hover .category-line {
+  width: 70px;
+}
+
+.tags-row {
+  margin-bottom: 8px;
+}
+
+.recipe-type-badge {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  border: 1px solid rgba(255,255,255,0.3);
+  padding: 2px 6px;
+  color: #fff;
+  border-radius: 3px;
+}
+
+.recipe-type-badge.meat {
+  color: #ff6b6b;
+  border-color: #ff6b6b;
+}
+
+.recipe-type-badge.dairy {
+  color: #4dadf7;
+  border-color: #4dadf7;
+}
+
+.recipe-type-badge.parve {
+  color: #C5A059;
+  border-color: #C5A059;
+}
+
+/* ========== כפתורי פעולה בכרטיס ========== */
+.edit-btn-profile {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  transition: all 0.3s;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 10;
+}
+
+.edit-btn-profile svg {
+  color: #C5A059;
+  transition: all 0.3s;
+}
+
+.edit-btn-profile:hover {
+  transform: scale(1.1) rotate(5deg);
+  background: rgba(197, 160, 89, 0.2);
+}
+
+.edit-btn-profile:hover svg {
+  color: #C5A059;
+  transform: scale(1.1);
+}
+
+.delete-btn-profile {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 10;
+}
+
+.delete-btn-profile svg {
+  color: #C5A059;
+  transition: all 0.3s;
+}
+
+.delete-btn-profile:hover {
+  transform: scale(1.15) rotate(10deg);
+  background: rgba(0, 0, 0, 0.8);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7);
+}
+
+.delete-btn-profile:hover svg {
+  transform: scale(1.15);
+}
+
+/* ========== טופס יצירת/עריכת מתכון ========== */
+.form-container {
+  background: #111;
+  padding: 30px;
+  margin-top: 30px;
+  border: 1px solid #1a1a1a;
+  border-radius: 12px;
+}
+
+.form-label {
+  color: #888;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.form-section {
+  margin-bottom: 20px;
+}
+
+.step-label {
+  color: #C5A059;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 10px;
+}
+
+/* ========== גריד רכיבים ========== */
+.ingredient-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 50px;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+/* ========== גריד שלבים ========== */
+.step-row {
+  margin-bottom: 10px;
+}
+
+.step-input-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 50px;
+  gap: 10px;
+}
+
+.step-textarea {
+  height: 21px;
+  width: 97%;
+  resize: vertical;
+  font-family: Assistant;
+}
+
+/* ========== כפתור מחיקה ========== */
+.remove-btn {
+  background: #000000;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  padding: 8px;
+}
+
+/* ========== כפתור הוספה ========== */
+.add-btn-dashed {
+  background: none;
+  border: 1px dashed #C5A059;
+  color: #C5A059;
+  padding: 10px;
+  width: 100%;
+  cursor: pointer;
+  border-radius: 4px;
+  margin-top: 10px;
+}
+
+/* ========== תזכורת רכיבים לא בשימוש ========== */
+.unused-ingredients-reminder {
+  background: rgba(197, 160, 89, 0.05);
+  border: 1px solid rgba(197, 160, 89, 0.2);
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 15px;
+}
+
+.unused-ingredients-label {
+  color: #888;
+  font-size: 0.85rem;
+  margin-bottom: 5px;
+}
+
+.unused-ingredients-list {
+  color: #C5A059;
+  font-size: 0.9rem;
+}
+
+/* ========== גריד זמן וסוג ========== */
+.time-type-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+/* ========== אזור תמונה ========== */
+.image-upload-area {
+  margin-bottom: 20px;
+  text-align: center;
+  border: 1px dashed #333;
+  padding: 30px;
+  border-radius: 8px;
+}
+
+.hidden-file-input {
+  display: none;
+}
+
+.image-select-btn {
+  cursor: pointer;
+  border: 1px solid #C5A059;
+}
+
+.image-preview-wrapper {
+  margin-top: 15px;
+}
+
+.image-preview {
+  max-width: 200px;
+  border-radius: 8px;
+  border: 1px solid #C5A059;
+}
+
+/* ========== הודעות שגיאה והצלחה ========== */
+.upload-error {
+  color: #ff4d4d;
+  margin-bottom: 15px;
+  text-align: center;
+  font-weight: bold;
+  padding: 10px;
+  background: rgba(255,77,77,0.1);
+  border-radius: 4px;
+}
+
+.upload-success {
+  margin-top: 15px;
+  text-align: center;
+  color: #2ecc71;
+  font-weight: bold;
+  padding: 10px;
+  background: rgba(46,204,113,0.1);
+  border-radius: 4px;
+}
+
+/* ========== כפתור ראשי ========== */
+.btn-gold {
+  background: #C5A059;
+  color: black;
+  padding: 15px 30px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  width: 100%;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+}
+
+.btn-gold:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(197,160,89,0.4);
+}
+
+/* ========== כפתור משני ========== */
+.btn-secondary {
+  background: transparent;
+  color: #888;
+  padding: 15px 30px;
+  border: 1px solid #333;
+  font-weight: bold;
+  cursor: pointer;
+  width: 100%;
+  border-radius: 8px;
+  font-size: 1rem;
+  margin-top: 10px;
+  transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+  border-color: #C5A059;
+  color: #C5A059;
+}
+
+/* ========== סקשן בקשת הרשאות ========== */
+.request-form-container {
+  background: #111;
+  padding: 40px;
+  margin-top: 30px;
+  border: 1px solid #1a1a1a;
+  border-radius: 12px;
+}
+
+.request-description {
+  color: #888;
+  margin-bottom: 20px;
+  line-height: 1.6;
+  font-size: 1.05rem;
+}
+
+.request-field {
+  margin-bottom: 15px;
+}
+
+.request-label {
+  color: #888;
+  display: block;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.request-textarea {
+  height: 200px;
+  width: 97.5%;
+  margin-bottom: 10px;
+  resize: vertical;
+  font-size: 1rem;
+  line-height: 1.5;
+  font-family: Assistant;
+}
+
+.char-counter {
+  text-align: left;
+  color: #666;
+  font-size: 0.9rem;
+  direction: ltr;
+}
+
+/* ========== הודעת תוצאת בקשה ========== */
+.request-result-message {
+  margin-bottom: 15px;
+  text-align: center;
+  font-weight: bold;
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.request-result-message.success {
+  background: rgba(46,204,113,0.1);
+  color: #2ecc71;
+  border: 2px solid rgba(46,204,113,0.5);
+}
+
+.request-result-message.error {
+  background: rgba(239,83,80,0.1);
+  color: #ef5350;
+  border: 2px solid rgba(239,83,80,0.5);
+}
+
+/* ========== סקשן פרופיל ========== */
+.profile-description {
+  color: #ccc;
+  margin-top: 20px;
+}
+
+/* ========== באנרים ========== */
+.success-banner {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, rgba(46, 204, 113, 0.95), rgba(39, 174, 96, 0.95));
+  color: #fff;
+  padding: 20px 40px;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(46, 204, 113, 0.4);
+  z-index: 9999;
+  font-weight: 600;
+  font-size: 1.1rem;
+  animation: slideDown 0.4s ease-out;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.error-banner {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, rgba(239, 83, 80, 0.95), rgba(200, 50, 50, 0.95));
+  color: #fff;
+  padding: 20px 40px;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(239, 83, 80, 0.4);
+  z-index: 9999;
+  font-weight: 600;
+  font-size: 1.1rem;
+  animation: slideDown 0.4s ease-out;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* ========== Scrollbar מעוצב ========== */
+.profile-sidebar-card::-webkit-scrollbar {
+  width: 6px;
+}
+
+.profile-sidebar-card::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+}
+
+.profile-sidebar-card::-webkit-scrollbar-thumb {
+  background: rgba(197, 160, 89, 0.5);
+  border-radius: 10px;
+}
+
+.profile-sidebar-card::-webkit-scrollbar-thumb:hover {
+  background: rgba(197, 160, 89, 0.8);
+}

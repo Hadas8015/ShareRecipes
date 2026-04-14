@@ -1,0 +1,277 @@
+<!-- דף מתכונים - גריד כרטיסיות עם פאנל סינון/מיון/חיפוש חכם -->
+
+<div class="gallery-container" dir="rtl">
+  
+  <!-- כפתורי ניווט עליונים -->
+  <div class="top-nav-actions">
+    <button class="back-to-categories-btn" (click)="backToCategories()" title="חזרה לקטגוריות">
+      <svg width="35px" height="35px" stroke-width="1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M17 10.625H9.8C9.8 10.625 9.8 10.625 9.8 10.625C9.8 10.625 7 10.625 7 13.625C7 17 9.8 17 9.8 17H10.6" stroke="#C5A059" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path>
+        <path d="M13.5 14L17 10.625L13.5 7" stroke="#C5A059" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path>
+        <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#C5A059" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+    
+    <button class="filter-toggle-btn" (click)="togglePanel()" [class.active]="isPanelOpen" title="סינון ומיון">
+      <svg width="35px" height="35px" viewBox="0 0 24 24" stroke-width="1.5" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 9L18 9" stroke="#C5A059" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+        <path d="M8 13L16 13" stroke="#C5A059" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+        <path d="M10 17L14 17" stroke="#C5A059" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+        <path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22Z" stroke="#C5A059" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div>
+
+  <!-- כותרת הקטגוריה -->
+  <div class="header-section">
+    <h1 class="main-title">{{ selectedCategoryHebrew }}</h1>
+    <div class="gold-divider"></div>
+    <p class="recipe-count">{{recipes.length}} מתכונים בקטגוריה זו</p>
+  </div>
+
+  <div class="overlay" *ngIf="isPanelOpen" (click)="closePanel()"></div>
+
+  <!-- פאנל סינון ומיון -->
+  <div class="filter-panel" [class.open]="isPanelOpen">
+    <button class="close-btn" (click)="closePanel()">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 18L18 6M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    
+    <div class="panel-content">
+      <div class="panel-header">
+        <h2 class="panel-title">סינון ומיון</h2>
+        <p class="panel-subtitle">התאם את תוצאות החיפוש להעדפותיך</p>
+      </div>
+
+      <button class="reset-btn" (click)="resetAll()">
+        נקה הכל
+      </button>
+
+      <!-- חיפוש חכם לפי רכיבים -->
+      <div class="section">
+        <div class="section-header">
+          <h3 class="section-title">חיפוש חכם</h3>
+        </div>
+        <p class="section-desc">הזן רכיבים שיש לך בבית ומצא מתכונים מתאימים</p>
+        
+        <div class="ingredient-input-wrapper">
+          <input 
+            type="text" 
+            [(ngModel)]="newIngredient" 
+            (keyup.enter)="addIngredient()"
+            placeholder="לדוגמה: עגבניות, בצל, שום..." 
+            class="panel-input"
+          />
+          <button class="add-ingredient-btn" id="plus" (click)="addIngredient()">
+            <svg width="16px" height="16px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
+
+        <!-- צ'יפים של רכיבים שנבחרו -->
+        <div class="chips-container" *ngIf="searchIngredients.length > 0">
+          <span class="chip" *ngFor="let ing of searchIngredients">
+            {{ ing }}
+            <button class="chip-remove" (click)="removeIngredient(ing)">
+              <svg width="16px" height="16px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </span>
+        </div>
+
+        <button 
+          class="search-btn" 
+          (click)="performSmartSearch()"
+          [disabled]="searchIngredients.length === 0"
+        >
+          חפש מתכונים מתאימים
+        </button>
+
+        <div class="smart-search-status" *ngIf="isSmartSearchActive">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          מציג תוצאות חיפוש חכם
+        </div>
+      </div>
+
+      <hr class="divider" />
+
+      <!-- סינון מתקדם -->
+      <div class="section">
+        <div class="section-header">
+          <h3 class="section-title">סינון מתקדם</h3>
+        </div>
+
+        <!-- חיפוש לפי שם -->
+        <div class="filter-group">
+          <label class="filter-label">חיפוש לפי שם</label>
+          <input 
+            type="text" 
+            [(ngModel)]="searchQuery" 
+            (input)="onSearchChange()" 
+            placeholder="הקלד את שם המתכון..."
+            class="panel-input"
+          >
+        </div>
+
+        <!-- סינון לפי כשרות -->
+        <div class="filter-group">
+          <label class="filter-label">סוג כשרות</label>
+          <div class="radio-group-modern">
+            <label class="radio-option-modern">
+              <input type="radio" name="type" [checked]="selectedTypeHebrew === 'הכל'" (change)="selectType('הכל')"/>
+              <span class="radio-custom"></span>
+              <span class="radio-text">הכל</span>
+            </label>
+            <label class="radio-option-modern">
+              <input type="radio" name="type" [checked]="selectedTypeHebrew === 'בשרי'" (change)="selectType('בשרי')"/>
+              <span class="radio-custom"></span>
+              <span class="radio-text">בשרי</span>
+            </label>
+            <label class="radio-option-modern">
+              <input type="radio" name="type" [checked]="selectedTypeHebrew === 'חלבי'" (change)="selectType('חלבי')"/>
+              <span class="radio-custom"></span>
+              <span class="radio-text">חלבי</span>
+            </label>
+            <label class="radio-option-modern">
+              <input type="radio" name="type" [checked]="selectedTypeHebrew === 'פרווה'" (change)="selectType('פרווה')"/>
+              <span class="radio-custom"></span>
+              <span class="radio-text">פרווה</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- סינון לפי זמן הכנה -->
+        <div class="filter-group">
+          <label class="filter-label">זמן הכנה</label>
+          <div class="range-wrapper-modern">
+            <input 
+              type="range" 
+              [(ngModel)]="minTime" 
+              [min]="timeRange.min" 
+              [max]="timeRange.max"
+              (input)="updateTimeRange()"
+              (change)="updateTimeRange()"
+              class="range-slider-modern"
+            />
+            <input 
+              type="range" 
+              [(ngModel)]="maxTime" 
+              [min]="timeRange.min" 
+              [max]="timeRange.max"
+              (input)="updateTimeRange()"
+              (change)="updateTimeRange()"
+              class="range-slider-modern range-slider-max"
+            />
+          </div>
+          <div class="range-values-modern">
+            <span class="range-value-badge">{{ minTime }} דק'</span>
+            <span class="range-divider">—</span>
+            <span class="range-value-badge">{{ maxTime }} דק'</span>
+          </div>
+        </div>
+
+        <!-- סינון לפי דירוג -->
+        <div class="filter-group">
+          <div class="rating-header-modern" (click)="toggleRatingExpansion()">
+            <label class="filter-label">דירוג מינימלי</label>
+            <svg class="expand-icon-modern" [class.expanded]="isRatingExpanded" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          
+          <div class="rating-options-modern" *ngIf="isRatingExpanded">
+            <div 
+              *ngFor="let rating of [5, 4, 3, 2, 1, 0]" 
+              class="rating-option-modern"
+              [class.selected]="selectedRating === rating"
+              (click)="selectRating(rating)"
+            >
+              <span class="stars-modern">
+                <svg *ngFor="let i of [1,2,3,4,5]" width="16" height="16" viewBox="0 0 24 24" [attr.fill]="i <= rating ? '#C5A059' : 'none'" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 2L15 8L22 9L17 14L18 21L12 18L6 21L7 14L2 9L9 8L12 2Z" [attr.stroke]="i <= rating ? '#C5A059' : '#333'" stroke-width="1.5"/>
+                </svg>
+              </span>
+              <span class="checkmark-modern" *ngIf="selectedRating === rating">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider" />
+
+      <!-- מיון -->
+      <div class="section">
+        <div class="section-header">
+          <h3 class="section-title">סדר תצוגה</h3>
+        </div>
+        <div class="sort-options-modern">
+          <button class="sort-btn-modern" [class.active]="sortBy === 'time'" (click)="selectSort('time')">
+            <span>זמן הכנה</span>
+            <span class="sort-direction">מהיר לארוך</span>
+          </button>
+          <button class="sort-btn-modern" [class.active]="sortBy === 'rating'" (click)="selectSort('rating')">
+            <span>דירוג</span>
+            <span class="sort-direction">גבוה לנמוך</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- גריד המתכונים -->
+  <div class="recipes-grid">
+    <div class="recipe-card-premium" *ngFor="let r of recipes" [routerLink]="['/recipe', r.id]">
+      
+      <!-- כפתור מחיקה - Admin בלבד -->
+      <button *ngIf="isAdmin()" 
+              class="delete-recipe-btn" 
+              (click)="deleteRecipe($event, r.id, r.name)"
+              title="מחק מתכון">
+        <svg width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M20 9L18.005 20.3463C17.8369 21.3026 17.0062 22 16.0353 22H7.96474C6.99379 22 6.1631 21.3026 5.99496 20.3463L4 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+              <path d="M21 6L15.375 6M3 6L8.625 6M8.625 6V4C8.625 2.89543 9.52043 2 10.625 2H13.375C14.4796 2 15.375 2.89543 15.375 4V6M8.625 6L15.375 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+      </button>
+
+      <div class="card-image-wrapper">
+        <img [src]="'http://127.0.0.1:5000/' + r.image_path" alt="תמונת מתכון" class="recipe-img">
+        <div class="card-overlay"></div>
+        
+        <div class="card-content-overlay">
+          <div class="tags-row">
+            <span class="recipe-type-badge" [class.meat]="r.type === 'Meat'" [class.dairy]="r.type === 'Dairy'" [class.parve]="r.type === 'Parve'">
+              {{ getHebrewType(r.type) }}
+            </span>
+          </div>
+          
+          <h2 class="recipe-name-serif">{{ r.name }}</h2>
+          
+          <div class="recipe-meta">
+            <span class="recipe-time">{{ r.preparation_time }} דק'</span>
+            <span class="separator">|</span>
+            <div class="stars-display">
+              <span *ngFor="let star of [1, 2, 3, 4, 5]" class="star" [class.filled]="r.rating >= star">★</span>
+            </div>
+          </div>
+
+          <div class="recipes-line"></div>
+          
+          <!-- אחוז התאמה בחיפוש חכם -->
+          <div class="match-score-luxury" *ngIf="isSmartSearchActive && r.match_score">
+            {{ r.match_score }}% אחוזי התאמה
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
